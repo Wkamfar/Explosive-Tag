@@ -15,10 +15,6 @@ ScriptsOnlyBuild:
     - Photon.Pun.Demo.PunBasics.PlayerUI
     - Photon.Pun.Demo.SlotRacer.PlayerControl
     - Photon.Pun.Demo.SlotRacer.Utils.SplineWalker
-    PhotonUnityNetworking.Editor.dll:
-    - Photon.Pun.PhotonTransformViewClassicEditor
-    - Photon.Pun.PhotonViewInspector
-    - Photon.Pun.PunSceneSettings
     PhotonUnityNetworking.dll:
     - Photon.Pun.PhotonAnimatorView
     - Photon.Pun.PhotonRigidbodyView
@@ -83,6 +79,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 114
       Script: {instanceID: 1986}
+    - Class: 114
+      Script: {instanceID: 2854}
     - Class: 114
       Script: {instanceID: 3602}
     - Class: 114
@@ -1552,7 +1550,7 @@ ScriptsOnlyBuild:
     className: VertexZoom
   - hash:
       serializedVersion: 2
-      Hash: b7960462cb41d95c2ea6fc4d97df052b
+      Hash: ab83a7a6a6c4e6ce1d7c38c1eb6f2fe2
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CharacterController
