@@ -6,6 +6,8 @@ public class CharacterController : MonoBehaviour
 {
     public GameObject playerModel;
     public float speed;
+    private float taggerSpeed;
+    private float currentSpeed;
     public PhotonView view;
     private bool isTagged;
     private float tagTimer;
@@ -14,6 +16,7 @@ public class CharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        taggerSpeed = speed * 1.5f;
         view = GetComponent<PhotonView>();
         Debug.Log("CharacterController.Start" + view.ViewID);
         if (view.ViewID == 1001)
@@ -29,10 +32,12 @@ public class CharacterController : MonoBehaviour
         if (isTagged == true)
         {
             this.gameObject.GetComponent<Renderer>().material.color = taggedColor;
+            currentSpeed = taggerSpeed;
         }
         else if (isTagged == false)
         {
             this.gameObject.GetComponent<Renderer>().material.color = nonTaggedColor;
+            currentSpeed = speed;
         }
     }
     void CheckInput()
@@ -43,12 +48,18 @@ public class CharacterController : MonoBehaviour
             bool isLeft = Input.GetKey(KeyCode.A);
             bool isRight = Input.GetKey(KeyCode.D);
             bool isBack = Input.GetKey(KeyCode.S);
-            if (isForward) playerModel.GetComponent<Rigidbody>().AddForce(this.transform.forward * speed * 1000 * Time.deltaTime);
-            if (isLeft) playerModel.GetComponent<Rigidbody>().AddForce(this.transform.right * -speed * 1000 * Time.deltaTime);
-            if (isRight) playerModel.GetComponent<Rigidbody>().AddForce(this.transform.right * speed * 1000 * Time.deltaTime);
-            if (isBack) playerModel.GetComponent<Rigidbody>().AddForce(this.transform.forward * -speed * 1000 * Time.deltaTime);
+            if (isForward) playerModel.GetComponent<Rigidbody>().AddForce(this.transform.forward * currentSpeed * 1000 * Time.deltaTime);
+            if (isLeft) playerModel.GetComponent<Rigidbody>().AddForce(this.transform.right * -currentSpeed * 1000 * Time.deltaTime);
+            if (isRight) playerModel.GetComponent<Rigidbody>().AddForce(this.transform.right * currentSpeed * 1000 * Time.deltaTime);
+            if (isBack) playerModel.GetComponent<Rigidbody>().AddForce(this.transform.forward * -currentSpeed * 1000 * Time.deltaTime);
         }
-        
+        VelocityCheck();
+    }
+    void VelocityCheck()
+    {
+        Rigidbody rigidbody = this.gameObject.GetComponent<Rigidbody>();
+        if (rigidbody.velocity.magnitude > currentSpeed)
+            rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, currentSpeed);
     }
     private void OnCollisionEnter(Collision col)
     {
