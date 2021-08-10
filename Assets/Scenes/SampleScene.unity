@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 348138939}
   - component: {fileID: 348138938}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Loading Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -198,10 +198,10 @@ RectTransform:
   m_Father: {fileID: 1868506149}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.0025215}
-  m_SizeDelta: {x: 473.8213, y: 116.1904}
+  m_AnchorMin: {x: 0.23956251, y: 0.44700003}
+  m_AnchorMax: {x: 0.76043755, y: 0.5537771}
+  m_AnchoredPosition: {x: 0.14007568, y: 0.16215897}
+  m_SizeDelta: {x: -0.34301758, y: -0.3242998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &348138938
 MonoBehaviour:
@@ -225,12 +225,12 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 100
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
-    m_MaxSize: 100
-    m_Alignment: 0
+    m_MaxSize: 300
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 1470144178}
   - component: {fileID: 1470144177}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -453,10 +453,10 @@ RectTransform:
   m_Father: {fileID: 1868506149}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.00027466}
-  m_SizeDelta: {x: 1920, y: 886.54}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0.5, y: -0.49975586}
+  m_SizeDelta: {x: -1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1470144177
 MonoBehaviour:
@@ -509,7 +509,7 @@ GameObject:
   - component: {fileID: 1868506147}
   - component: {fileID: 1868506146}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Loading Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

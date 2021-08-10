@@ -56,16 +56,16 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Photon\PhotonChat\Code\ChatOperationCode.cs" />
-    <Compile Include="Assets\Photon\PhotonChat\Code\ChatAppSettings.cs" />
-    <Compile Include="Assets\Photon\PhotonChat\Code\ChatChannel.cs" />
-    <Compile Include="Assets\Photon\PhotonChat\Code\ChatDisconnectCause.cs" />
-    <Compile Include="Assets\Photon\PhotonChat\Code\ChatParameterCode.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Code\ChannelWellKnownProperties.cs" />
-    <Compile Include="Assets\Photon\PhotonChat\Code\ChatClient.cs" />
-    <Compile Include="Assets\Photon\PhotonChat\Code\ChatUserStatus.cs" />
-    <Compile Include="Assets\Photon\PhotonChat\Code\ChatPeer.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Code\ChatEventCode.cs" />
+    <Compile Include="Assets\Photon\PhotonChat\Code\ChatClient.cs" />
+    <Compile Include="Assets\Photon\PhotonChat\Code\ChatAppSettings.cs" />
+    <Compile Include="Assets\Photon\PhotonChat\Code\ChatOperationCode.cs" />
+    <Compile Include="Assets\Photon\PhotonChat\Code\ChatChannel.cs" />
+    <Compile Include="Assets\Photon\PhotonChat\Code\ChatParameterCode.cs" />
+    <Compile Include="Assets\Photon\PhotonChat\Code\ChatPeer.cs" />
+    <Compile Include="Assets\Photon\PhotonChat\Code\ChatDisconnectCause.cs" />
+    <Compile Include="Assets\Photon\PhotonChat\Code\ChatUserStatus.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Code\ChatState.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Code\ChannelCreationOptions.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Code\IChatClientListener.cs" />
@@ -304,11 +304,11 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Editor\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
-    <Reference Include="Photon3Unity3D">
-      <HintPath>Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll</HintPath>
-    </Reference>
     <Reference Include="websocket-sharp">
       <HintPath>Assets\Photon\PhotonLibs\WebSocket\websocket-sharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Photon3Unity3D">
+      <HintPath>Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>C:\Program Files\Unity\Hub\Editor\2020.2.6f1\Editor\Data\NetStandard\ref\2.0.0\netstandard.dll</HintPath>

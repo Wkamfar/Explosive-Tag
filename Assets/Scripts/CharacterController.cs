@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 public class CharacterController : MonoBehaviour
 {
+    public GameObject lookAtSphere;
     public GameObject playerModel;
     public float speed;
     private float taggerSpeed;
@@ -13,6 +14,11 @@ public class CharacterController : MonoBehaviour
     private float tagTimer;
     public Color taggedColor;
     public Color nonTaggedColor;
+
+    private Vector2 mouseLocation;
+
+    public Transform LookPos { get; private set; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,12 +37,12 @@ public class CharacterController : MonoBehaviour
         CheckInput();
         if (isTagged == true)
         {
-            this.gameObject.GetComponent<Renderer>().material.color = taggedColor;
+            playerModel.gameObject.GetComponent<Renderer>().material.color = taggedColor;
             currentSpeed = taggerSpeed;
         }
         else if (isTagged == false)
         {
-            this.gameObject.GetComponent<Renderer>().material.color = nonTaggedColor;
+            playerModel.gameObject.GetComponent<Renderer>().material.color = nonTaggedColor;
             currentSpeed = speed;
         }
     }
@@ -48,18 +54,25 @@ public class CharacterController : MonoBehaviour
             bool isLeft = Input.GetKey(KeyCode.A);
             bool isRight = Input.GetKey(KeyCode.D);
             bool isBack = Input.GetKey(KeyCode.S);
-            if (isForward) playerModel.GetComponent<Rigidbody>().AddForce(this.transform.forward * currentSpeed * 1000 * Time.deltaTime);
-            if (isLeft) playerModel.GetComponent<Rigidbody>().AddForce(this.transform.right * -currentSpeed * 1000 * Time.deltaTime);
-            if (isRight) playerModel.GetComponent<Rigidbody>().AddForce(this.transform.right * currentSpeed * 1000 * Time.deltaTime);
-            if (isBack) playerModel.GetComponent<Rigidbody>().AddForce(this.transform.forward * -currentSpeed * 1000 * Time.deltaTime);
+            if (isForward) this.GetComponent<Rigidbody>().AddForce(this.transform.forward * currentSpeed * 1000 * Time.deltaTime);
+            if (isLeft) this.GetComponent<Rigidbody>().AddForce(this.transform.right * -currentSpeed * 1000 * Time.deltaTime);
+            if (isRight) this.GetComponent<Rigidbody>().AddForce(this.transform.right * currentSpeed * 1000 * Time.deltaTime);
+            if (isBack) this.GetComponent<Rigidbody>().AddForce(this.transform.forward * -currentSpeed * 1000 * Time.deltaTime);
+            if (!isForward && !isLeft && !isBack && !isRight) currentSpeed = 0;
         }
         VelocityCheck();
+        Direction();
     }
     void VelocityCheck()
     {
         Rigidbody rigidbody = this.gameObject.GetComponent<Rigidbody>();
         if (rigidbody.velocity.magnitude > currentSpeed)
             rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, currentSpeed);
+    }
+    void Direction()
+    {
+        Vector3 lookPos = new Vector3(lookAtSphere.transform.position.x, this.transform.position.y, lookAtSphere.transform.position.z);
+        playerModel.transform.LookAt(lookPos);
     }
     private void OnCollisionEnter(Collision col)
     {
