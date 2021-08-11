@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public class CameraScript : MonoBehaviour
 {
@@ -13,6 +14,15 @@ public class CameraScript : MonoBehaviour
     void Start() // declare what number the player is
     {
         yLimit = this.transform.position.y;
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach(GameObject p in players)
+        {
+            if (PhotonView.Get(p).IsMine)
+            {
+                player = p;
+                break;
+            }
+        }
     }
 
     // Update is called once per frame
