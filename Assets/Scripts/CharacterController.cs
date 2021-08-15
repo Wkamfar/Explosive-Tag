@@ -22,6 +22,7 @@ public class CharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //this.view.RPC("GettingTagged", RpcTarget.All, 2001);
         taggerSpeed = speed * 1.5f;
         view = GetComponent<PhotonView>();
         Debug.Log("CharacterController.Start" + view.ViewID);
@@ -78,7 +79,8 @@ public class CharacterController : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Player") && isTagged && col.gameObject.GetComponent<CharacterController>().tagTimer <= 0)
         {
-            col.gameObject.GetComponent<CharacterController>().isTagged = true;
+            this.view.RPC("GettingTagged", RpcTarget.All, col.gameObject.GetComponent<PhotonView>().ViewID);
+            //col.gameObject.GetComponent<CharacterController>().isTagged = true;
             isTagged = false;
             tagTimer = 3;
             Invoke("resetTagTimer", tagTimer);
@@ -87,6 +89,15 @@ public class CharacterController : MonoBehaviour
     private void resetTagTimer()
     {
         tagTimer = 0;
+    }
+    [PunRPC]
+    private void GettingTagged(int id)
+    {
+        Debug.Log("CharacterController.GettingTagged: ViewID is " + view.ViewID);
+        if(view.ViewID == id)
+        {
+            isTagged = true;
+        }
     }
 }
 

@@ -6,6 +6,7 @@ ScriptsOnlyBuild:
     - CursorScript
     - DirectionSphereScript
     - JoinRoom
+    - MenuCore
     - MinimapScript
     - ServerConnect
     - Spawn
@@ -103,11 +104,11 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2936}
     - Class: 114
-      Script: {instanceID: 4054}
+      Script: {instanceID: 4056}
     - Class: 114
-      Script: {instanceID: 4082}
+      Script: {instanceID: 4084}
     - Class: 114
-      Script: {instanceID: 4660}
+      Script: {instanceID: 4662}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 136
@@ -161,6 +162,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 2936}
     - Class: 114
       Script: {instanceID: 3040}
+    - Class: 114
+      Script: {instanceID: 3912}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -265,25 +268,25 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 3834}
     - Class: 114
-      Script: {instanceID: 4016}
+      Script: {instanceID: 4018}
     - Class: 114
-      Script: {instanceID: 4036}
+      Script: {instanceID: 4038}
     - Class: 114
-      Script: {instanceID: 4054}
+      Script: {instanceID: 4056}
     - Class: 114
-      Script: {instanceID: 4090}
+      Script: {instanceID: 4092}
     - Class: 114
-      Script: {instanceID: 4140}
-    - Class: 114
-      Script: {instanceID: 4416}
+      Script: {instanceID: 4142}
     - Class: 114
       Script: {instanceID: 4418}
     - Class: 114
-      Script: {instanceID: 4590}
+      Script: {instanceID: 4420}
     - Class: 114
-      Script: {instanceID: 4660}
+      Script: {instanceID: 4592}
     - Class: 114
-      Script: {instanceID: 4896}
+      Script: {instanceID: 4662}
+    - Class: 114
+      Script: {instanceID: 4898}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1431,6 +1434,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Mask
+  - hash:
+      serializedVersion: 2
+      Hash: 9c0711b81c4a266264040d5563101173
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MenuCore
   - hash:
       serializedVersion: 2
       Hash: ac1e49249c7034b7330cd0827116d70f
