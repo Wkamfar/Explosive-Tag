@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
+using TMPro;
 public class CharacterController : MonoBehaviour
 {
     public GameObject lookAtSphere;
@@ -14,6 +16,8 @@ public class CharacterController : MonoBehaviour
     private float tagTimer;
     public Color taggedColor;
     public Color nonTaggedColor;
+    public RawImage playerMinimapIcon;
+    public GameObject iconCanvas;
 
     private Vector2 mouseLocation;
 
@@ -30,6 +34,14 @@ public class CharacterController : MonoBehaviour
         {
             isTagged = true;
         }
+        if (view.IsMine)
+        {
+            iconCanvas.gameObject.layer = LayerMask.NameToLayer("MyIcon");
+        }
+        else
+        {
+            iconCanvas.gameObject.layer = LayerMask.NameToLayer("OtherIcon");
+        }
     }
 
     // Update is called once per frame
@@ -40,11 +52,13 @@ public class CharacterController : MonoBehaviour
         {
             playerModel.gameObject.GetComponent<Renderer>().material.color = taggedColor;
             currentSpeed = taggerSpeed;
+            playerMinimapIcon.color = taggedColor;
         }
         else if (isTagged == false)
         {
             playerModel.gameObject.GetComponent<Renderer>().material.color = nonTaggedColor;
             currentSpeed = speed;
+            playerMinimapIcon.color = nonTaggedColor;
         }
     }
     void CheckInput()
@@ -60,9 +74,10 @@ public class CharacterController : MonoBehaviour
             if (isRight) this.GetComponent<Rigidbody>().AddForce(this.transform.right * currentSpeed * 1000 * Time.deltaTime);
             if (isBack) this.GetComponent<Rigidbody>().AddForce(this.transform.forward * -currentSpeed * 1000 * Time.deltaTime);
             if (!isForward && !isLeft && !isBack && !isRight) currentSpeed = 0;
+            VelocityCheck();
+            Direction();
         }
-        VelocityCheck();
-        Direction();
+        
     }
     void VelocityCheck()
     {
@@ -98,6 +113,10 @@ public class CharacterController : MonoBehaviour
         {
             isTagged = true;
         }
+    }
+    public bool TaggedState()
+    {
+        return isTagged;
     }
 }
 

@@ -3,23 +3,24 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - MinimapCamera
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Minimap UI
   - Water
   - UI
+  - MyIcon
+  - OtherIcon
   - 
   - 
+  - Ground
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - OtherPlayer
   - 
   - 
   - 
