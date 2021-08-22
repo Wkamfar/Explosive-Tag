@@ -252,6 +252,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 5616224211797434075}
   - {fileID: 7839962920776487027}
+  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -459,7 +460,7 @@ GameObject:
   - component: {fileID: 4838071796795704337}
   - component: {fileID: 4838071796795704336}
   m_Layer: 13
-  m_Name: Player Model
+  m_Name: PlayerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

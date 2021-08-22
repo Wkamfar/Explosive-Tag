@@ -21,15 +21,19 @@ public class CharacterController : MonoBehaviour
 
     private Vector2 mouseLocation;
 
+    private Transform playerMod;
+    private Quaternion syncRot;
+
     public Transform LookPos { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
+        playerMod = this.gameObject.transform.Find("PlayerModel");
         //this.view.RPC("GettingTagged", RpcTarget.All, 2001);
         taggerSpeed = speed * 1.5f;
         view = GetComponent<PhotonView>();
-        Debug.Log("CharacterController.Start" + view.ViewID);
+        Debug.Log("CharacterController.Start" + playerMod);
         if (view.ViewID == 1001)
         {
             isTagged = true;
@@ -48,6 +52,7 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         CheckInput();
+        Debug.Log("CharacterController.Update: Tag Status:" + view.ViewID + isTagged);
         if (isTagged == true)
         {
             playerModel.gameObject.GetComponent<Renderer>().material.color = taggedColor;
@@ -76,8 +81,10 @@ public class CharacterController : MonoBehaviour
             if (!isForward && !isLeft && !isBack && !isRight) currentSpeed = 0;
             VelocityCheck();
             Direction();
-        }
-        
+            this.view.RPC("UpdatePlayerModelRotation", RpcTarget.All, playerMod.rotation);
+            //RotationCheck();
+        }  
+
     }
     void VelocityCheck()
     {
@@ -90,15 +97,28 @@ public class CharacterController : MonoBehaviour
         Vector3 lookPos = new Vector3(lookAtSphere.transform.position.x, this.transform.position.y, lookAtSphere.transform.position.z);
         playerModel.transform.LookAt(lookPos);
     }
+    /*void RotationCheck()
+    {
+        Vector3 rotation = new Vector3(playerMod.rotation.x, playerMod.rotation.y, playerMod.rotation.z);
+        if (view.IsMine)
+        {
+            this.view.RPC("UpdatePlayerModelRotation", RpcTarget.All, rotation);
+            //public void UpdatePlayerModelRotation(Vector3 rotation)
+        }
+        else
+        {
+            playerMod.rotation = Quaternion.Lerp(playerMod.rotation, syncRot, 0.1f);
+        }
+    }*/
     private void OnCollisionEnter(Collision col)
     {
+        if (!view.IsMine) return;
         if (col.gameObject.CompareTag("Player") && isTagged && col.gameObject.GetComponent<CharacterController>().tagTimer <= 0)
         {
             this.view.RPC("GettingTagged", RpcTarget.All, col.gameObject.GetComponent<PhotonView>().ViewID);
+            col.gameObject.GetComponent<CharacterController>().YouAreIt();
             //col.gameObject.GetComponent<CharacterController>().isTagged = true;
-            isTagged = false;
-            tagTimer = 3;
-            Invoke("resetTagTimer", tagTimer);
+            //isTagged = false;
         }
     }
     private void resetTagTimer()
@@ -108,15 +128,37 @@ public class CharacterController : MonoBehaviour
     [PunRPC]
     private void GettingTagged(int id)
     {
-        Debug.Log("CharacterController.GettingTagged: ViewID is " + view.ViewID);
+        if (isTagged)
+        {
+            tagTimer = 3;
+            Invoke("resetTagTimer", tagTimer);
+            isTagged = false;
+        }
+        Debug.Log("CharacterController.GettingTagged: ViewID is " + id);
+        Debug.Log("CharacterControler.GettingTagged:" + view.ViewID);
         if(view.ViewID == id)
         {
             isTagged = true;
+            Debug.Log("CharacterController.GettingTaggged: We made it to this if statement." + isTagged);
         }
+    }
+    public  void YouAreIt()
+    {
+        this.view.RPC("GettingTagged", RpcTarget.All, view.ViewID);
     }
     public bool TaggedState()
     {
         return isTagged;
+    }
+    [PunRPC]
+    public void UpdatePlayerModelRotation(Quaternion rotation)
+    {
+        //Debug.Log("CharacterController.UpdatePlayerModelRotation");
+        Transform playerModel = this.gameObject.transform.Find("PlayerModel");
+        //Quaternion rot = new Quaternion(rotation.x, rotation.y, rotation.z, 1);
+        playerModel.rotation = Quaternion.Lerp(playerModel.rotation, rotation, 0.1f);
+        //playerModel.rotation = rot;
+        //syncRot = rot;
     }
 }
 

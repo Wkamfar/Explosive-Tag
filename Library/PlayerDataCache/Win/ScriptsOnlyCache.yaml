@@ -21,8 +21,6 @@ ScriptsOnlyBuild:
     - Photon.Pun.Demo.PunBasics.PlayerUI
     - Photon.Pun.Demo.SlotRacer.PlayerControl
     - Photon.Pun.Demo.SlotRacer.Utils.SplineWalker
-    PhotonUnityNetworking.Editor.dll:
-    - Photon.Pun.PunSceneSettings
     PhotonUnityNetworking.dll:
     - Photon.Pun.PhotonAnimatorView
     - Photon.Pun.PhotonRigidbodyView
@@ -89,11 +87,11 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1850}
+      Script: {instanceID: 1514}
     - Class: 114
-      Script: {instanceID: 2234}
+      Script: {instanceID: 1852}
     - Class: 114
-      Script: {instanceID: 2244}
+      Script: {instanceID: 2236}
     - Class: 114
       Script: {instanceID: 2442}
     - Class: 114
@@ -109,13 +107,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2936}
     - Class: 114
-      Script: {instanceID: 4056}
+      Script: {instanceID: 3114}
     - Class: 114
-      Script: {instanceID: 4084}
+      Script: {instanceID: 4058}
     - Class: 114
-      Script: {instanceID: 4662}
+      Script: {instanceID: 4086}
     - Class: 114
-      Script: {instanceID: 28430}
+      Script: {instanceID: 4664}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 136
@@ -154,7 +152,7 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1508}
     - Class: 114
-      Script: {instanceID: 1828}
+      Script: {instanceID: 1830}
     - Class: 114
       Script: {instanceID: 2442}
     - Class: 114
@@ -170,7 +168,7 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 3040}
     - Class: 114
-      Script: {instanceID: 3912}
+      Script: {instanceID: 3914}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -235,23 +233,23 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1510}
     - Class: 114
-      Script: {instanceID: 1622}
+      Script: {instanceID: 1514}
     - Class: 114
-      Script: {instanceID: 1746}
+      Script: {instanceID: 1624}
     - Class: 114
-      Script: {instanceID: 1770}
+      Script: {instanceID: 1748}
     - Class: 114
-      Script: {instanceID: 1774}
+      Script: {instanceID: 1772}
     - Class: 114
-      Script: {instanceID: 1828}
+      Script: {instanceID: 1776}
     - Class: 114
-      Script: {instanceID: 1850}
+      Script: {instanceID: 1830}
     - Class: 114
-      Script: {instanceID: 2104}
+      Script: {instanceID: 1852}
     - Class: 114
-      Script: {instanceID: 2200}
+      Script: {instanceID: 2106}
     - Class: 114
-      Script: {instanceID: 2244}
+      Script: {instanceID: 2202}
     - Class: 114
       Script: {instanceID: 2254}
     - Class: 114
@@ -271,31 +269,31 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2938}
     - Class: 114
-      Script: {instanceID: 3510}
+      Script: {instanceID: 3512}
     - Class: 114
-      Script: {instanceID: 3826}
+      Script: {instanceID: 3828}
     - Class: 114
-      Script: {instanceID: 3834}
+      Script: {instanceID: 3836}
     - Class: 114
-      Script: {instanceID: 4018}
+      Script: {instanceID: 4020}
     - Class: 114
-      Script: {instanceID: 4038}
+      Script: {instanceID: 4040}
     - Class: 114
-      Script: {instanceID: 4056}
+      Script: {instanceID: 4058}
     - Class: 114
-      Script: {instanceID: 4092}
+      Script: {instanceID: 4094}
     - Class: 114
-      Script: {instanceID: 4142}
-    - Class: 114
-      Script: {instanceID: 4418}
+      Script: {instanceID: 4144}
     - Class: 114
       Script: {instanceID: 4420}
     - Class: 114
-      Script: {instanceID: 4592}
+      Script: {instanceID: 4422}
     - Class: 114
-      Script: {instanceID: 4662}
+      Script: {instanceID: 4594}
     - Class: 114
-      Script: {instanceID: 4898}
+      Script: {instanceID: 4664}
+    - Class: 114
+      Script: {instanceID: 4900}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -345,6 +343,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: Toggle
+  - hash:
+      serializedVersion: 2
+      Hash: c1d728126ff1918728036c59106d32b2
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: RawImage
   - hash:
       serializedVersion: 2
       Hash: 24f79094aff162c9aa69c31d64d777d3
@@ -663,12 +667,6 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: Photon.Chat.Demo
     className: ChatAppIdCheckerUI
-  - hash:
-      serializedVersion: 2
-      Hash: c1d728126ff1918728036c59106d32b2
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: RawImage
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -1071,6 +1069,12 @@ ScriptsOnlyBuild:
     assemblyName: PhotonUnityNetworking.Demos.dll
     namespaceName: Photon.Pun.Demo.Cockpit
     className: IsConnectedAndReadyProperty
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MinimapController
   - hash:
       serializedVersion: 2
       Hash: 4fd8bf02e3089425d3502e26c44ba31a
@@ -1941,12 +1945,6 @@ ScriptsOnlyBuild:
     assemblyName: PhotonUnityNetworking.Demos.dll
     namespaceName: Photon.Pun.Demo.Cockpit.Forms
     className: UserIdUiForm
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: MinimapController
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
