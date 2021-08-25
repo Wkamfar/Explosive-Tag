@@ -190,11 +190,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89844647510bacf48a6bb24ce05d216c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minTimeToDeath: 15000
+  tagTimeAdd: 5000
+  flashingTicTimer: 1
+  flashingTicLength: 0.5
   lookAtSphere: {fileID: 4838071796622632983}
   playerModel: {fileID: 4838071796795704345}
   speed: 10
   view: {fileID: 4779020215465233951}
   taggedColor: {r: 1, g: 0, b: 0, a: 1}
+  flashingColor: {r: 1, g: 1, b: 1, a: 1}
   nonTaggedColor: {r: 0, g: 0.2829156, b: 1, a: 1}
   playerMinimapIcon: {fileID: 2886384876446407745}
   iconCanvas: {fileID: 3159865813493400631}
@@ -252,7 +257,6 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 5616224211797434075}
   - {fileID: 7839962920776487027}
-  - {fileID: 0}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
