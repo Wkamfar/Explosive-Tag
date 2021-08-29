@@ -10,10 +10,6 @@ public class CharacterController : MonoBehaviour
     public float minTimeToDeath;
     public float tagTimeAdd;
     private float currentTagTime;
-    private float currentTime;
-    private float realDeathTime;
-    public float flashingTicTimer;
-    public float flashingTicLength;
 
     public GameObject lookAtSphere;
     public GameObject playerModel;
@@ -34,6 +30,13 @@ public class CharacterController : MonoBehaviour
     private Transform playerMod;
     private Quaternion syncRot;
 
+    //For the raycast
+    public Transform rayCastShootPoint;
+    public GameObject grapplingHook;
+    //Dasher info
+    public float maxDashDistance;
+    //Grappler info
+    public float grapplingHookShootForce;
     public Transform LookPos { get; private set; }
 
     // Start is called before the first frame update
@@ -61,8 +64,6 @@ public class CharacterController : MonoBehaviour
     void CreateTagTimer()
     {// Fix this later
         float randDeathNum = Random.Range(0, 15);
-        realDeathTime = minTimeToDeath;
-        realDeathTime += randDeathNum;
         currentTagTime = PhotonNetwork.ServerTimestamp;
         minTimeToDeath += currentTagTime;
         minTimeToDeath += randDeathNum * 1000;
@@ -76,24 +77,25 @@ public class CharacterController : MonoBehaviour
     [PunRPC]
     void KillPlayer()
     {//Make a spectator mode for this instead
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
+        //Turn this back on later
     }
     // Update is called once per frame
     void Update()
     {//Fix this later
-        currentTime += Time.deltaTime;
         currentTagTime = PhotonNetwork.ServerTimestamp;
         if(currentTagTime >= minTimeToDeath && isTagged)
         {
             this.view.RPC("KillPlayer", RpcTarget.All);
         }
         CheckInput();
+        ClassAbilities();
         Debug.Log("CharacterController.Update: Tag Status:" + view.ViewID + isTagged);
         if (isTagged == true)
         {
-            FlashingColorScript();
             currentSpeed = taggerSpeed;
             playerMinimapIcon.color = taggedColor;
+            playerModel.gameObject.GetComponent<Renderer>().material.color = taggedColor;
         }
         else if (isTagged == false)
         {
@@ -101,28 +103,6 @@ public class CharacterController : MonoBehaviour
             currentSpeed = speed;
             playerMinimapIcon.color = nonTaggedColor;
         }
-    }
-    private void FlashingColorScript()
-    {
-        //Debug.Log("CharacterController.FlashingColorScript:" + ((realDeathTime - currentTime) / realDeathTime));
-        //(minTimeToDeath - currentSpeed / minTimeToDeath)
-        if (flashingTicTimer > 0)
-        {
-            playerModel.gameObject.GetComponent<Renderer>().material.color = taggedColor;
-            flashingTicTimer -= Time.deltaTime;
-        }
-        else if (flashingTicLength > 0)
-        {
-            playerModel.gameObject.GetComponent<Renderer>().material.color = flashingColor;
-            flashingTicLength -= Time.deltaTime;
-        }
-        else
-        {
-            flashingTicTimer = ((realDeathTime - currentTime)/realDeathTime);
-            flashingTicLength = 0.5f * ((realDeathTime - currentTime) / realDeathTime);
-        }
-
-
     }
     private void resetTagTimer()
     {
@@ -148,7 +128,6 @@ public class CharacterController : MonoBehaviour
     }
     public  void YouAreIt(float timeToDeath)
     {//Fix this later
-        currentTime -= 5;
         this.view.RPC("UpdateTagTimer", RpcTarget.All, timeToDeath + tagTimeAdd);
         this.view.RPC("GettingTagged", RpcTarget.All, view.ViewID);
     }
@@ -209,6 +188,35 @@ public class CharacterController : MonoBehaviour
             //col.gameObject.GetComponent<CharacterController>().isTagged = true;
             //isTagged = false;
         }
+    }
+    private void ClassAbilities()
+    {
+        //Dasher
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+
+            RaycastHit hit;
+            Vector3 targetPoint;
+            Vector3 ray = new Vector3(rayCastShootPoint.position.x, rayCastShootPoint.transform.position.y, rayCastShootPoint.transform.position.z);
+            if (Physics.Raycast(ray, rayCastShootPoint.forward, out hit, maxDashDistance))
+                targetPoint = hit.point;
+            else
+                targetPoint = new Vector3(lookAtSphere.transform.position.x, lookAtSphere.transform.position.y, lookAtSphere.transform.position.z);
+            this.gameObject.transform.position = targetPoint;
+            //GameObject currentHook = Instantiate(grapplingHook, rayCastShootPoint.position, rayCastShootPoint.rotation);
+            //currentHook.GetComponent<Rigidbody>().AddForce(rayCastShootPoint.transform.forward * grapplingHookShootForce * 100, ForceMode.Impulse);
+            //Debug.Log("CharacterController.ClassAbilities: This Happened");
+
+
+        }
+        //Grappler
+
+        //Addict
+    }
+    public void Grapple(GameObject currentHook)
+    {
+        this.gameObject.transform.position = currentHook.transform.position;
+        Debug.Log("CharacterController.Grapple: Grapple Complete");
     }
 }
 
