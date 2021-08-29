@@ -287,12 +287,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minTimeToDeath: 15000
   tagTimeAdd: 5000
+  taggedColorTime: 0
+  flashingColorTime: 0
+  flashingStartTime: 0
+  flashingWindow: 15000
   lookAtSphere: {fileID: 4838071796622632983}
   playerModel: {fileID: 4838071796795704345}
   speed: 10
   view: {fileID: 4779020215465233951}
   taggedColor: {r: 1, g: 0, b: 0, a: 1}
-  flashingColor: {r: 1, g: 0, b: 0, a: 1}
+  flashingColor: {r: 1, g: 1, b: 1, a: 1}
   nonTaggedColor: {r: 0, g: 0.2829156, b: 1, a: 1}
   playerMinimapIcon: {fileID: 2886384876446407745}
   iconCanvas: {fileID: 3159865813493400631}

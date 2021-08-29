@@ -6,10 +6,15 @@ using UnityEngine.UI;
 using TMPro;
 public class CharacterController : MonoBehaviour
 {
-    //It doesn't work, fix it later
     public float minTimeToDeath;
     public float tagTimeAdd;
     private float currentTagTime;
+    public float taggedColorTime;
+    public float flashingColorTime;
+    public float flashingStartTime;
+    private float MIN_FLASHING_TIME = .25f * 1000;
+    public float flashingWindow = 15 * 1000;
+    private float startTagTimer;
 
     public GameObject lookAtSphere;
     public GameObject playerModel;
@@ -45,6 +50,8 @@ public class CharacterController : MonoBehaviour
         playerMod = this.gameObject.transform.Find("PlayerModel");
         //this.view.RPC("GettingTagged", RpcTarget.All, 2001);
         taggerSpeed = speed * 1.1f;
+        taggedColorTime = 1 * 1000;
+        flashingColorTime = 0.3f * 1000;
         view = GetComponent<PhotonView>();
         Debug.Log("CharacterController.Start" + playerMod);
         if (view.ViewID == 1001)
@@ -67,6 +74,7 @@ public class CharacterController : MonoBehaviour
         currentTagTime = PhotonNetwork.ServerTimestamp;
         minTimeToDeath += currentTagTime;
         minTimeToDeath += randDeathNum * 1000;
+        startTagTimer = currentTagTime; //Update to everyone 
         this.view.RPC("UpdateTagTimer", RpcTarget.All, minTimeToDeath);
     }
     [PunRPC]
@@ -77,7 +85,7 @@ public class CharacterController : MonoBehaviour
     [PunRPC]
     void KillPlayer()
     {//Make a spectator mode for this instead
-        //Destroy(this.gameObject);
+        Destroy(this.gameObject);
         //Turn this back on later
     }
     // Update is called once per frame
@@ -95,14 +103,35 @@ public class CharacterController : MonoBehaviour
         {
             currentSpeed = taggerSpeed;
             playerMinimapIcon.color = taggedColor;
-            playerModel.gameObject.GetComponent<Renderer>().material.color = taggedColor;
+            FlashingColors();
         }
         else if (isTagged == false)
-        {
+        {//If tagged is false reset FlashingColors timers?
             playerModel.gameObject.GetComponent<Renderer>().material.color = nonTaggedColor;
             currentSpeed = speed;
             playerMinimapIcon.color = nonTaggedColor;
         }
+    }
+    void FlashingColors()
+    {
+        float timeDifference = PhotonNetwork.ServerTimestamp - flashingStartTime;
+        if (timeDifference < taggedColorTime)
+        {
+            playerModel.gameObject.GetComponent<Renderer>().material.color = taggedColor;
+        }
+        else if (timeDifference < (flashingColorTime + taggedColorTime))
+        {
+            playerModel.gameObject.GetComponent<Renderer>().material.color = flashingColor;
+        }
+        else 
+        {
+            Debug.Log("CharacterController.FlashingColors: Timer got reset");
+            flashingStartTime = PhotonNetwork.ServerTimestamp;
+            
+        } 
+        float percentageTimeLeft = (currentTagTime - minTimeToDeath) / (startTagTimer - minTimeToDeath);
+        taggedColorTime = taggedColorTime < MIN_FLASHING_TIME ? MIN_FLASHING_TIME : 1 * 1000 * percentageTimeLeft;
+        flashingColorTime = flashingColorTime < MIN_FLASHING_TIME ? MIN_FLASHING_TIME : .3f * 1000 * percentageTimeLeft;
     }
     private void resetTagTimer()
     {
