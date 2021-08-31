@@ -6,6 +6,9 @@ using UnityEngine.UI;
 using TMPro;
 public class CharacterController : MonoBehaviour
 {
+    //Game Manager info
+    public GameObject gameManager;
+
     public float minTimeToDeath;
     public float tagTimeAdd;
     private float currentTagTime;
@@ -36,15 +39,15 @@ public class CharacterController : MonoBehaviour
     private Quaternion syncRot;
 
     //Class Booleans
-    private bool isDasher;
-    private bool isGrappler;
-    private bool isShouter;
-    private bool isPhantom;
-    private bool isArchitect;
-    private bool isSkater;
-    private bool isEngineer;
-    private bool isPhoenix;
     private bool isAddict;
+    private bool isGrappler;
+    private bool isPhoenix;
+    private bool isDasher;
+    private bool isShouter;
+    private bool isEngineer;
+    private bool isPhantom;
+    private bool isSkater;
+    private bool isArchitect;
 
     //For the raycast
     public Transform rayCastShootPoint;
@@ -58,6 +61,7 @@ public class CharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("Game Manager");
         playerMod = this.gameObject.transform.Find("PlayerModel");
         //this.view.RPC("GettingTagged", RpcTarget.All, 2001);
         taggerSpeed = speed * 1.1f;
@@ -78,6 +82,7 @@ public class CharacterController : MonoBehaviour
         {
             iconCanvas.gameObject.layer = LayerMask.NameToLayer("OtherIcon");
         }
+        DecidedClass(gameManager.GetComponent<GameManagerScript>().GetConfirmedNumber());
     }
     void CreateTagTimer()
     {// Fix this later
@@ -96,6 +101,7 @@ public class CharacterController : MonoBehaviour
     [PunRPC]
     void KillPlayer()
     {//Make a spectator mode for this instead
+        gameManager.GetComponent<GameManagerScript>().DeathCanvas();
         Destroy(this.gameObject);
         //Turn this back on later
     }
@@ -230,35 +236,77 @@ public class CharacterController : MonoBehaviour
             //isTagged = false;
         }
     }
+    private void DecidedClass(int classNumber)
+    {
+        if (classNumber == 0) { isAddict = true; }
+        else if(classNumber == 1) { isGrappler = true; }
+        else if (classNumber == 2) { isPhoenix = true; }
+        else if (classNumber == 3) { isDasher = true; }
+        else if (classNumber == 4) { isShouter = true; }
+        else if (classNumber == 5) { isEngineer = true; }
+        else if (classNumber == 6) { isPhantom = true; }
+        else if (classNumber == 7) { isSkater = true; }
+        else if (classNumber == 8) { isArchitect = true; }
+        Debug.Log(classNumber);
+    }
     private void ClassAbilities()
     {
         
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            //Dasher
-            RaycastHit hit;
-            Vector3 targetPoint;
-            Vector3 ray = new Vector3(rayCastShootPoint.position.x, rayCastShootPoint.transform.position.y, rayCastShootPoint.transform.position.z);
-            if (Physics.Raycast(ray, rayCastShootPoint.forward, out hit, maxDashDistance))
-                targetPoint = hit.point;
-            else
-                targetPoint = new Vector3(lookAtSphere.transform.position.x, lookAtSphere.transform.position.y, lookAtSphere.transform.position.z);
-            this.gameObject.transform.position = targetPoint;
-            //Grappler
-
             //Addict
+            if (isAddict)
+            {
 
-            //Shouter
+            }
+            //Grappler
+            else if (isGrappler)
+            {
 
+            }
             //Phoenix
+            else if (isPhoenix)
+            {
 
-            //Phantom
+            }
+            //Dasher
+            else if (isDasher)
+            {
+                RaycastHit hit;
+                Vector3 targetPoint;
+                Vector3 ray = new Vector3(rayCastShootPoint.position.x, rayCastShootPoint.transform.position.y, rayCastShootPoint.transform.position.z);
+                if (Physics.Raycast(ray, rayCastShootPoint.forward, out hit, maxDashDistance))
+                    targetPoint = hit.point;
+                else
+                    targetPoint = new Vector3(lookAtSphere.transform.position.x, lookAtSphere.transform.position.y, lookAtSphere.transform.position.z);
+                this.gameObject.transform.position = targetPoint;
+            }
+            //Shouter
+            else if (isShouter)
+            {
 
-            //Skater
-
-            //Architect
-
+            }
             //Engineer
+            else if (isEngineer)
+            {
+
+            }
+            //Phantom
+            else if (isPhantom)
+            {
+
+            }
+            //Skater
+            else if (isSkater)
+            {
+
+            }
+            //Architect
+            else if (isArchitect)
+            {
+
+            }
+
         }
 
 

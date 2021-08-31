@@ -6,7 +6,11 @@ using TMPro;
 using Photon.Pun;
 public class GameManagerScript : MonoBehaviour
 {
-    //Make it so that if everyone votes the timer drops down to five seconds if it no already below that point.
+    //Make it so that if everyone votes the timer drops down to five seconds if it no already below that point. // Make the timer that is syncronized
+    //Camera and Minimap references, so that they only activate after he spawns
+    public Camera mainCamera;
+    public GameObject minimap;
+    public Camera minimapCamera;
     //Map Selector
     public GameObject mapSelector;
 
@@ -34,13 +38,29 @@ public class GameManagerScript : MonoBehaviour
     public GameObject map3Display;
 
     public TextMeshProUGUI mapSelectorTimerDisplay;
-    public float mapSelectorTimer; //Make this using Photon time and syncronize all of this with the server on wednesday or sunday
-    //Class Selector
+    public float mapSelectorTimer = 30; //Make this using Photon time and syncronize all of this with the server on wednesday or sunday
+    //Class Selector // when the player either locks in the charcter or runs out of time they will be given that specific character // have the time drop down to five when everyone confirms their character
     public GameObject classSelector;
+    public GameObject[] classSelectorButtons;
+    public GameObject[] classSelectorDescriptions;
+    private int classNumber;
+    private int confirmedClassNumber = -1;
+
+    public TextMeshProUGUI classSelectorTimerDisplay;
+    public float classSelectorTimer = 30;
+    //private bool lockedInCharacter;
     //InGame UI // Maybe reference the Character Controller and after you make all of the selections then it spawns you into the game.
+    public GameObject playerPrefab;
+    public GameObject mainCanvas;
+    //Death UI / spectator mode // activate when the player dies, so call it from the CharacterContoller.cs
+    public GameObject deathCanvas;
+    //menu UI
+    public GameObject pauseMenu;
     // Start is called before the first frame update
     void Start()
     {
+
+        //Initialize the map Selector
         map1Number = Random.Range(0, maps.Length);
         map2Number = Random.Range(0, maps.Length);
         map3Number = Random.Range(0, maps.Length);
@@ -52,13 +72,31 @@ public class GameManagerScript : MonoBehaviour
         map1Display.GetComponent<RawImage>().texture = maps[map1Number].GetComponent<MapDataScript>().mapTexture;
         map2Display.GetComponent<RawImage>().texture = maps[map2Number].GetComponent<MapDataScript>().mapTexture;
         map3Display.GetComponent<RawImage>().texture = maps[map3Number].GetComponent<MapDataScript>().mapTexture;
+        //Initialize the UI
+        mapSelector.SetActive(true);
+        classSelector.SetActive(false);
+        mainCanvas.SetActive(false);
+        deathCanvas.SetActive(false);
+        pauseMenu.SetActive(false);
+        //Initialize the class selector
+        ClassSelection(0);
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        MapSelection();
-        ClassSelection();
+        if(mapSelector.activeInHierarchy)
+            MapSelection();
+        else if(classSelector.activeInHierarchy)
+            ClassSelection();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!pauseMenu.activeInHierarchy)
+                pauseMenu.SetActive(true);
+            else
+                pauseMenu.SetActive(false);
+        }
     }
     public void MapSelection()
     {
@@ -196,8 +234,95 @@ public class GameManagerScript : MonoBehaviour
     }
 
     //Class Selection
-    public void ClassSelection()
+    private void ClassSelection()
     {
-
+        if(classSelectorTimer <= 0)
+        {
+            if (confirmedClassNumber == -1)
+                confirmedClassNumber = classNumber;
+            classSelector.SetActive(false);
+            SpawnPlayer();
+        }
+    }
+    public void ClassSelection(int ClassNumber)
+    {
+        classSelectorButtons[classNumber].transform.localScale = new Vector3(1, 1);
+        classSelectorDescriptions[classNumber].SetActive(false);
+        classNumber = ClassNumber;
+        classSelectorDescriptions[classNumber].SetActive(true);
+        classSelectorButtons[classNumber].transform.localScale = new Vector3(1.2f, 1.2f);
+    }
+    public void Addict()
+    {
+        ClassSelection(0);
+    }
+    public void Grappler()
+    {
+        ClassSelection(1);
+    }
+    public void Phoenix()
+    {
+        ClassSelection(2);
+    }
+    public void Dasher()
+    {
+        ClassSelection(3);
+    }
+    public void Shouter()
+    {
+        ClassSelection(4);
+    }
+    public void Engineer()
+    {
+        ClassSelection(5);
+    }
+    public void Phantom()
+    {
+        ClassSelection(6);
+    }
+    public void Skater()
+    {
+        ClassSelection(7);
+    }
+    public void Architect()
+    {
+        ClassSelection(8);
+    }
+    public void RandomClass()
+    {
+        ClassSelection(Random.Range(0, classSelectorButtons.Length));
+    }
+    public void ConfirmClass()
+    {
+        confirmedClassNumber = classNumber;
+    }
+    public int GetConfirmedNumber()
+    {
+        return confirmedClassNumber;
+    }
+    //Player Spawning 
+    private void SpawnPlayer()
+    {
+        Vector3 position = new Vector3(Random.Range(-48, 48), 1, Random.Range(-48, 48));
+        PhotonNetwork.Instantiate(playerPrefab.name, position, Quaternion.identity);
+        mainCanvas.SetActive(true);
+        mainCamera.GetComponent<CameraScript>().SearchForPlayer();
+        minimap.GetComponent<MinimapScript>().SearchForPlayer();
+        minimapCamera.GetComponent<MinimapController>().SearchForPlayer();
+    }
+    //Death Canvas
+    public void DeathCanvas() // Make a random death message or a custom one, that would be pretty cool
+    {
+        deathCanvas.SetActive(true);
+        mainCanvas.SetActive(false);
+    }
+    //pause menu
+    public void OpenPauseMenu()
+    {
+        pauseMenu.SetActive(true);
+    }
+    public void ClosePauseMenu()
+    {
+        pauseMenu.SetActive(false);
     }
 }

@@ -5,8 +5,10 @@ ScriptsOnlyBuild:
     - CharacterController
     - CursorScript
     - DirectionSphereScript
+    - GameManagerScript
     - GrapplingHookScript
     - JoinRoom
+    - MapDataScript
     - MenuCore
     - MinimapController
     - MinimapScript
@@ -24,6 +26,8 @@ ScriptsOnlyBuild:
     - Photon.Pun.Demo.PunBasics.PlayerUI
     - Photon.Pun.Demo.SlotRacer.PlayerControl
     - Photon.Pun.Demo.SlotRacer.Utils.SplineWalker
+    PhotonUnityNetworking.Editor.dll:
+    - Photon.Pun.PunSceneSettings
     PhotonUnityNetworking.dll:
     - Photon.Pun.PhotonAnimatorView
     - Photon.Pun.PhotonRigidbodyView
@@ -106,29 +110,33 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2590}
     - Class: 114
-      Script: {instanceID: 2630}
+      Script: {instanceID: 2628}
     - Class: 114
-      Script: {instanceID: 2750}
+      Script: {instanceID: 2632}
     - Class: 114
-      Script: {instanceID: 2840}
+      Script: {instanceID: 2752}
     - Class: 114
-      Script: {instanceID: 2876}
+      Script: {instanceID: 2816}
     - Class: 114
-      Script: {instanceID: 2968}
+      Script: {instanceID: 2844}
     - Class: 114
-      Script: {instanceID: 2978}
+      Script: {instanceID: 2880}
     - Class: 114
-      Script: {instanceID: 3010}
+      Script: {instanceID: 2972}
     - Class: 114
-      Script: {instanceID: 3086}
+      Script: {instanceID: 2982}
     - Class: 114
-      Script: {instanceID: 3162}
+      Script: {instanceID: 3014}
     - Class: 114
-      Script: {instanceID: 4134}
+      Script: {instanceID: 3090}
     - Class: 114
-      Script: {instanceID: 4162}
+      Script: {instanceID: 3166}
     - Class: 114
-      Script: {instanceID: 4756}
+      Script: {instanceID: 4138}
+    - Class: 114
+      Script: {instanceID: 4166}
+    - Class: 114
+      Script: {instanceID: 4760}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -181,19 +189,19 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2590}
     - Class: 114
-      Script: {instanceID: 2630}
+      Script: {instanceID: 2632}
     - Class: 114
-      Script: {instanceID: 2750}
+      Script: {instanceID: 2752}
     - Class: 114
-      Script: {instanceID: 2842}
+      Script: {instanceID: 2846}
     - Class: 114
-      Script: {instanceID: 2978}
+      Script: {instanceID: 2982}
     - Class: 114
-      Script: {instanceID: 3086}
+      Script: {instanceID: 3090}
     - Class: 114
-      Script: {instanceID: 3982}
+      Script: {instanceID: 3986}
     - Class: 114
-      Script: {instanceID: 3998}
+      Script: {instanceID: 4002}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -284,43 +292,43 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2590}
     - Class: 114
-      Script: {instanceID: 2750}
+      Script: {instanceID: 2752}
     - Class: 114
-      Script: {instanceID: 2876}
+      Script: {instanceID: 2880}
     - Class: 114
-      Script: {instanceID: 2926}
+      Script: {instanceID: 2930}
     - Class: 114
-      Script: {instanceID: 2968}
+      Script: {instanceID: 2972}
     - Class: 114
-      Script: {instanceID: 2978}
+      Script: {instanceID: 2982}
     - Class: 114
-      Script: {instanceID: 2980}
+      Script: {instanceID: 2984}
     - Class: 114
-      Script: {instanceID: 3566}
+      Script: {instanceID: 3570}
     - Class: 114
-      Script: {instanceID: 3896}
+      Script: {instanceID: 3900}
     - Class: 114
-      Script: {instanceID: 3904}
+      Script: {instanceID: 3908}
     - Class: 114
-      Script: {instanceID: 4096}
+      Script: {instanceID: 4100}
     - Class: 114
-      Script: {instanceID: 4116}
+      Script: {instanceID: 4120}
     - Class: 114
-      Script: {instanceID: 4134}
+      Script: {instanceID: 4138}
     - Class: 114
-      Script: {instanceID: 4176}
+      Script: {instanceID: 4180}
     - Class: 114
-      Script: {instanceID: 4222}
+      Script: {instanceID: 4226}
     - Class: 114
-      Script: {instanceID: 4506}
+      Script: {instanceID: 4510}
     - Class: 114
-      Script: {instanceID: 4508}
+      Script: {instanceID: 4512}
     - Class: 114
-      Script: {instanceID: 4686}
+      Script: {instanceID: 4690}
     - Class: 114
-      Script: {instanceID: 4756}
+      Script: {instanceID: 4760}
     - Class: 114
-      Script: {instanceID: 4996}
+      Script: {instanceID: 5000}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -846,6 +854,12 @@ ScriptsOnlyBuild:
     className: ConnectAndJoinRandom
   - hash:
       serializedVersion: 2
+      Hash: 9bdf1e0b70bfcf3590bcdbe10421e988
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GameManagerScript
+  - hash:
+      serializedVersion: 2
       Hash: 760787567e1b60d64a3e421ab83ee14a
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -928,6 +942,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_SpriteAnimator
+  - hash:
+      serializedVersion: 2
+      Hash: f8166a82eb375914f1f1289155fffb65
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MapDataScript
   - hash:
       serializedVersion: 2
       Hash: 301f4da7cc3b301c161d089f9d22efed

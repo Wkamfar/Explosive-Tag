@@ -285,6 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89844647510bacf48a6bb24ce05d216c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameManager: {fileID: 0}
   minTimeToDeath: 15000
   tagTimeAdd: 5000
   taggedColorTime: 0
