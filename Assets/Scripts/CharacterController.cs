@@ -35,6 +35,17 @@ public class CharacterController : MonoBehaviour
     private Transform playerMod;
     private Quaternion syncRot;
 
+    //Class Booleans
+    private bool isDasher;
+    private bool isGrappler;
+    private bool isShouter;
+    private bool isPhantom;
+    private bool isArchitect;
+    private bool isSkater;
+    private bool isEngineer;
+    private bool isPhoenix;
+    private bool isAddict;
+
     //For the raycast
     public Transform rayCastShootPoint;
     public GameObject grapplingHook;
@@ -132,6 +143,7 @@ public class CharacterController : MonoBehaviour
         float percentageTimeLeft = (currentTagTime - minTimeToDeath) / (startTagTimer - minTimeToDeath);
         taggedColorTime = taggedColorTime < MIN_FLASHING_TIME ? MIN_FLASHING_TIME : 1 * 1000 * percentageTimeLeft;
         flashingColorTime = flashingColorTime < MIN_FLASHING_TIME ? MIN_FLASHING_TIME : .3f * 1000 * percentageTimeLeft;
+
     }
     private void resetTagTimer()
     {
@@ -220,10 +232,10 @@ public class CharacterController : MonoBehaviour
     }
     private void ClassAbilities()
     {
-        //Dasher
+        
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-
+            //Dasher
             RaycastHit hit;
             Vector3 targetPoint;
             Vector3 ray = new Vector3(rayCastShootPoint.position.x, rayCastShootPoint.transform.position.y, rayCastShootPoint.transform.position.z);
@@ -232,15 +244,24 @@ public class CharacterController : MonoBehaviour
             else
                 targetPoint = new Vector3(lookAtSphere.transform.position.x, lookAtSphere.transform.position.y, lookAtSphere.transform.position.z);
             this.gameObject.transform.position = targetPoint;
-            //GameObject currentHook = Instantiate(grapplingHook, rayCastShootPoint.position, rayCastShootPoint.rotation);
-            //currentHook.GetComponent<Rigidbody>().AddForce(rayCastShootPoint.transform.forward * grapplingHookShootForce * 100, ForceMode.Impulse);
-            //Debug.Log("CharacterController.ClassAbilities: This Happened");
+            //Grappler
 
+            //Addict
 
+            //Shouter
+
+            //Phoenix
+
+            //Phantom
+
+            //Skater
+
+            //Architect
+
+            //Engineer
         }
-        //Grappler
 
-        //Addict
+
     }
     public void Grapple(GameObject currentHook)
     {
