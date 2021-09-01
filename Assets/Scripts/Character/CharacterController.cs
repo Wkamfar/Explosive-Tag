@@ -10,6 +10,9 @@ public class CharacterController : MonoBehaviour
     public GameObject gameManager;
     //New Timers
     public TimeManager deathTime;
+    public TimeManager flickerTime;
+    private const float FLICKER_RATE = 1000;
+    private const int MAX_TIME_OFFSET = 15;
     //Alt Timers
     public float minTimeToDeath;
     public float tagTimeAdd;
@@ -65,13 +68,15 @@ public class CharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startTagTimer = currentTagTime; //Delete this later
+        deathTime = new TimeManager();
+        flickerTime = new TimeManager();
+        taggedColorTime = 1 * 1000;
+        flashingColorTime = 0.3f * 1000;
+
         gameManager = GameObject.Find("Game Manager");
         playerMod = this.gameObject.transform.Find("PlayerModel");
         //this.view.RPC("GettingTagged", RpcTarget.All, 2001);
         taggerSpeed = speed * 1.1f;
-        taggedColorTime = 1 * 1000;
-        flashingColorTime = 0.3f * 1000;
         view = GetComponent<PhotonView>();
         Debug.Log("CharacterController.Start" + playerMod);
         if (view.ViewID == 1001)
@@ -91,17 +96,15 @@ public class CharacterController : MonoBehaviour
     }
     void CreateTagTimer()
     {// Fix this later
-        float randDeathNum = Random.Range(0, 15);
-        currentTagTime = PhotonNetwork.ServerTimestamp;
-        minTimeToDeath += currentTagTime;
-        minTimeToDeath += randDeathNum * 1000;
+        deathTime.ResetEndTime(minTimeToDeath);
+        deathTime.AddRandomOffsetToEndTime(MAX_TIME_OFFSET);
         startTagTimer = currentTagTime; //Update to everyone 
-        this.view.RPC("UpdateTagTimer", RpcTarget.All, minTimeToDeath);
+        this.view.RPC("UpdateTagTimer", RpcTarget.All, deathTime.GetEndTime());
     }
     [PunRPC]
-    public void UpdateTagTimer(float timeToDeath)
+    public void UpdateTagTimer(float endTime)
     {
-        minTimeToDeath = timeToDeath;
+        deathTime.UpdateEndTime(endTime);
     }
     [PunRPC]
     void KillPlayer()
@@ -113,8 +116,7 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {//Fix this later
-        currentTagTime = PhotonNetwork.ServerTimestamp;
-        if(currentTagTime >= minTimeToDeath && isTagged)
+        if(deathTime.IsTimeUp() && isTagged)
         {
             this.view.RPC("KillPlayer", RpcTarget.All);
         }
