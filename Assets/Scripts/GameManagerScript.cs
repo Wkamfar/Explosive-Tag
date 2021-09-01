@@ -45,7 +45,7 @@ public class GameManagerScript : MonoBehaviour
     public GameObject[] classSelectorDescriptions;
     private int classNumber;
     private int confirmedClassNumber = -1;
-
+    public GameObject[] classAbilityIcons;
     public TextMeshProUGUI classSelectorTimerDisplay;
     public float classSelectorTimer = 30;
     //private bool lockedInCharacter;
@@ -241,6 +241,11 @@ public class GameManagerScript : MonoBehaviour
             if (confirmedClassNumber == -1)
                 confirmedClassNumber = classNumber;
             classSelector.SetActive(false);
+            for(int i = 0; i < classAbilityIcons.Length; i++)
+            {
+                classAbilityIcons[i].SetActive(false);
+            }
+            classAbilityIcons[confirmedClassNumber].SetActive(true);
             SpawnPlayer();
         }
     }
@@ -303,9 +308,10 @@ public class GameManagerScript : MonoBehaviour
     //Player Spawning 
     private void SpawnPlayer()
     {
+        mainCanvas.SetActive(true);
+
         Vector3 position = new Vector3(Random.Range(-48, 48), 1, Random.Range(-48, 48));
         PhotonNetwork.Instantiate(playerPrefab.name, position, Quaternion.identity);
-        mainCanvas.SetActive(true);
         mainCamera.GetComponent<CameraScript>().SearchForPlayer();
         minimap.GetComponent<MinimapScript>().SearchForPlayer();
         minimapCamera.GetComponent<MinimapController>().SearchForPlayer();
