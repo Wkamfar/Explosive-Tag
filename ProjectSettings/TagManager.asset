@@ -6,6 +6,7 @@ TagManager:
   tags:
   - MinimapCamera
   - Wall
+  - ItemCrate
   layers:
   - Default
   - TransparentFX

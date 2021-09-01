@@ -56,6 +56,9 @@ public class GameManagerScript : MonoBehaviour
     public GameObject deathCanvas;
     //menu UI
     public GameObject pauseMenu;
+    //For the Item UI
+    public GameObject[] itemIcons;
+    private bool hasItem;
     // Start is called before the first frame update
     void Start()
     {
@@ -330,5 +333,18 @@ public class GameManagerScript : MonoBehaviour
     public void ClosePauseMenu()
     {
         pauseMenu.SetActive(false);
+    }
+    //For the items
+    public void ItemCrate(int itemNumber)
+    {
+        if (!hasItem)
+        {
+            itemIcons[itemNumber].SetActive(true);
+            hasItem = true;
+        }
+        else
+        {
+
+        }
     }
 }

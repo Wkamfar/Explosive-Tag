@@ -57,7 +57,9 @@ public class CharacterController : MonoBehaviour
     //Grappler info
     public float grapplingHookShootForce;
     public Transform LookPos { get; private set; }
-
+    //item Crate drops and info
+    public GameObject[] items;
+    private bool hasItem;
     // Start is called before the first frame update
     void Start()
     {
@@ -236,6 +238,16 @@ public class CharacterController : MonoBehaviour
             //isTagged = false;
         }
     }
+    private void OnTriggerEnter(Collider col)
+    {
+        if (col.CompareTag("ItemCrate"))
+        {
+            int randNum = Random.Range(0, items.Length);
+            gameManager.GetComponent<GameManagerScript>().ItemCrate(randNum);
+            ItemCrate(randNum);
+            Destroy(col.gameObject);
+        }
+    }
     private void DecidedClass(int classNumber)
     {
         if (classNumber == 0) { isAddict = true; }
@@ -316,5 +328,19 @@ public class CharacterController : MonoBehaviour
         this.gameObject.transform.position = currentHook.transform.position;
         Debug.Log("CharacterController.Grapple: Grapple Complete");
     }
+    //For the Item Crate
+    private void ItemCrate(int itemNumber)
+    {
+        if (!hasItem)
+        {
+            items[itemNumber].SetActive(true);
+            hasItem = true;
+        }
+        else
+        {
+
+        }
+    }
+
 }
 

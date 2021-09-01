@@ -21838,6 +21838,13 @@ MonoBehaviour:
   mainCanvas: {fileID: 1293855227}
   deathCanvas: {fileID: 448096357}
   pauseMenu: {fileID: 353816273}
+  itemIcons:
+  - {fileID: 1706599129}
+  - {fileID: 1824607126}
+  - {fileID: 1181476152}
+  - {fileID: 1062354379}
+  - {fileID: 376042307}
+  - {fileID: 794602142}
 --- !u!4 &2014811818
 Transform:
   m_ObjectHideFlags: 0
