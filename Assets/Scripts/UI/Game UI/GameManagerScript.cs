@@ -39,6 +39,7 @@ public class GameManagerScript : MonoBehaviour
 
     public TextMeshProUGUI mapSelectorTimerDisplay;
     public float mapSelectorTimer = 30; //Make this using Photon time and syncronize all of this with the server on wednesday or sunday
+    public TimeManager mapTime;
     //Class Selector // when the player either locks in the charcter or runs out of time they will be given that specific character // have the time drop down to five when everyone confirms their character
     public GameObject classSelector;
     public GameObject[] classSelectorButtons;
@@ -48,6 +49,7 @@ public class GameManagerScript : MonoBehaviour
     public GameObject[] classAbilityIcons;
     public TextMeshProUGUI classSelectorTimerDisplay;
     public float classSelectorTimer = 30;
+    public TimeManager classTime;
     //private bool lockedInCharacter;
     //InGame UI // Maybe reference the Character Controller and after you make all of the selections then it spawns you into the game.
     public GameObject playerPrefab;

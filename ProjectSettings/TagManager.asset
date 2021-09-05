@@ -7,6 +7,7 @@ TagManager:
   - MinimapCamera
   - Wall
   - ItemCrate
+  - Ice
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - 
   - 
   - Ground
-  - 
+  - Wall
   - 
   - Player
   - OtherPlayer

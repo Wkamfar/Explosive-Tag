@@ -9,7 +9,7 @@ public class TimeManager
     private const int SECONDS_TO_MS = 1000;
     //Time in milliseconds 1000ms = 1s 
     //Times are offset from the server timestamp
-    public TimeManager()
+    public TimeManager() //make a server timestamp invoke function, so that I can use it instead of invoke, unless any of these functions can be used as an invoke
     {
         ResetEndTime();
     }

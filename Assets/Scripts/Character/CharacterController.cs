@@ -57,10 +57,29 @@ public class CharacterController : MonoBehaviour
     //For the raycast
     public Transform rayCastShootPoint;
     public GameObject grapplingHook;
+    public LayerMask rayCastLayerMask;
+    //Grappler info
+    public float grapplingSpeed;
+    public float grapplingHookShootForce;
+    public float maxGrappleDistance;
     //Dasher info
     public float maxDashDistance;
-    //Grappler info
-    public float grapplingHookShootForce;
+    //skater info
+    //for the passive
+    private GameObject iceSpawningController;
+    private bool inIce;
+    public GameObject ice;
+    public float spawnIceRate;
+    private bool spawnedIce;
+    private bool idolSpawnedIce;
+    //for the rocket
+    private bool directionLocked;
+    private bool isRocketBoosting;
+    public float rocketDuration;
+    public float rocketCooldown;
+    public float rocketBoostAmount;
+    public float rocketMaxSpeed;
+    
     public Transform LookPos { get; private set; }
     //item Crate drops and info
     public GameObject[] items;
@@ -72,7 +91,8 @@ public class CharacterController : MonoBehaviour
         flickerTime = new TimeManager();
         taggedColorTime = 1 * 1000;
         flashingColorTime = 0.3f * 1000;
-
+                          
+        iceSpawningController = GameObject.Find("SkaterPassiveSpawnCap");
         gameManager = GameObject.Find("Game Manager");
         playerMod = this.gameObject.transform.Find("PlayerModel");
         //this.view.RPC("GettingTagged", RpcTarget.All, 2001);
@@ -212,9 +232,11 @@ public class CharacterController : MonoBehaviour
             if (isLeft) this.GetComponent<Rigidbody>().AddForce(this.transform.right * -currentSpeed * 1000 * Time.deltaTime);
             if (isRight) this.GetComponent<Rigidbody>().AddForce(this.transform.right * currentSpeed * 1000 * Time.deltaTime);
             if (isBack) this.GetComponent<Rigidbody>().AddForce(this.transform.forward * -currentSpeed * 1000 * Time.deltaTime);
-            if (!isForward && !isLeft && !isBack && !isRight) currentSpeed = 0;
+            if (!isForward && !isLeft && !isBack && !isRight && !inIce)  currentSpeed = 0;  //disable this if you want sliding for the skater class // make it so that the skater might leave behind a trail of slipper ice, and if you come in contact with it you slide
+            Debug.Log("CharacterController.CheckInput: CurrentSpeed is: " + currentSpeed);
             VelocityCheck();
-            Direction();
+            
+            if (!directionLocked) { Direction(); }
             this.view.RPC("UpdatePlayerModelRotation", RpcTarget.All, playerMod.rotation);
             //RotationCheck();
         }
@@ -243,6 +265,7 @@ public class CharacterController : MonoBehaviour
             //isTagged = false;
         }
     }
+
     private void OnTriggerEnter(Collider col)
     {
         if (col.CompareTag("ItemCrate"))
@@ -252,6 +275,12 @@ public class CharacterController : MonoBehaviour
             ItemCrate(randNum);
             Destroy(col.gameObject);
         }
+        if (col.CompareTag("Ice")) {inIce = true; }
+    }
+    private void OnTriggerExit(Collider col)
+    {
+        Debug.Log("CharacterContoller.OnTriggerExit: inIce = " + inIce);
+        if (col.CompareTag("Ice")) {inIce = false;  }
     }
     private void DecidedClass(int classNumber)
     {
@@ -264,13 +293,35 @@ public class CharacterController : MonoBehaviour
         else if (classNumber == 6) { isPhantom = true; }
         else if (classNumber == 7) { isSkater = true; }
         else if (classNumber == 8) { isArchitect = true; }
-        Debug.Log(classNumber);
     }
     private void ClassAbilities()
     {
-        
+        //Passive abilities
+        if (isAddict) { AddictPassive(); }
+        //Grappler
+        else if (isGrappler) { GrapplerPassive(); }
+        //Phoenix
+        else if (isPhoenix) { PhoenixPassive(); }
+        //Dasher
+        else if (isDasher) { DasherPassive(); }
+        //Shouter
+        else if (isShouter) { ShouterPassive(); }
+        //Engineer
+        else if (isEngineer) { EngineerPassive(); }
+        //Phantom
+        else if (isPhantom) { PhantomPassive(); }
+        //Skater
+        else if (isSkater) { SkaterPassive(); }
+        //Architect
+        else if (isArchitect) { ArchitectPassive(); }
+        //Active abilities
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
+            //Raycast information that can be used in several situations
+            rayCastLayerMask = LayerMask.GetMask("Wall");
+            RaycastHit hit;
+            Vector3 targetPoint;
+            Vector3 ray = new Vector3(rayCastShootPoint.position.x, rayCastShootPoint.transform.position.y, rayCastShootPoint.transform.position.z);
             //Addict
             if (isAddict)
             {
@@ -279,7 +330,14 @@ public class CharacterController : MonoBehaviour
             //Grappler
             else if (isGrappler)
             {
-
+                if (Physics.Raycast(ray, rayCastShootPoint.forward, out hit, maxGrappleDistance, rayCastLayerMask))
+                    targetPoint = hit.point;
+                else //add here an animation that shoots out a grapple and then it fails, use this animation for any failed grapples
+                    return;
+                //start adding force until you are at the wall
+                //Create the grapple hook here
+                GameObject currentHook = Instantiate(grapplingHook, rayCastShootPoint.transform.position, Quaternion.identity);
+                currentHook.GetComponent<Rigidbody>().AddForce(rayCastShootPoint.forward * grapplingHookShootForce, ForceMode.Impulse);
             }
             //Phoenix
             else if (isPhoenix)
@@ -287,12 +345,9 @@ public class CharacterController : MonoBehaviour
 
             }
             //Dasher
-            else if (isDasher)
+            else if (isDasher) // rework this class so that it doesn't teleport you into the wall, maybe make a different shoot point for the grappling then the Dash ability, or make it so that the sphere isn't used entirely, and maybe use the visor, but that would be difficult
             {
-                RaycastHit hit;
-                Vector3 targetPoint;
-                Vector3 ray = new Vector3(rayCastShootPoint.position.x, rayCastShootPoint.transform.position.y, rayCastShootPoint.transform.position.z);
-                if (Physics.Raycast(ray, rayCastShootPoint.forward, out hit, maxDashDistance))
+                if (Physics.Raycast(ray, rayCastShootPoint.forward, out hit, maxDashDistance, rayCastLayerMask))
                     targetPoint = hit.point;
                 else
                     targetPoint = new Vector3(lookAtSphere.transform.position.x, lookAtSphere.transform.position.y, lookAtSphere.transform.position.z);
@@ -309,14 +364,15 @@ public class CharacterController : MonoBehaviour
 
             }
             //Phantom
-            else if (isPhantom)
+            else if (isPhantom) 
             {
 
             }
-            //Skater
-            else if (isSkater)
+            //Skater // use the fuel gauge to display how long the rocket is going to last for. 
+            else if (isSkater) //you can't cancel it by pressing the ability button again, but it will deactivate after hitting a wall, but you will be stunned for a split second
             {
-
+                directionLocked = true;
+                isRocketBoosting = true; //Make the cooldown and everything for this ability when you make the timers
             }
             //Architect
             else if (isArchitect)
@@ -330,8 +386,98 @@ public class CharacterController : MonoBehaviour
     }
     public void Grapple(GameObject currentHook)
     {
-        this.gameObject.transform.position = currentHook.transform.position;
-        Debug.Log("CharacterController.Grapple: Grapple Complete");
+
+    }
+
+    private void AddictPassive()
+    {
+
+    }
+    private void GrapplerPassive()
+    {
+
+    }
+    private void PhoenixPassive()
+    {
+
+    }
+    private void DasherPassive()
+    {
+
+    }
+    private void ShouterPassive()
+    {
+
+    }
+    private void EngineerPassive()
+    {
+
+    }
+    private void PhantomPassive() //use the velocity.magnitude to determine when you aren't moving and then start a timer, and during the timer, make it so that the player gradually gets less visable until nearly being invisible
+    { // turn of the mesh renderer and add a constant particle effect, so that the character is still noticable when invisible // add a timer to this later // You can only see the phantom's heart when it is invisible
+        GameObject visor = GameObject.Find("Visor");
+        if(this.GetComponent<Rigidbody>().velocity.magnitude == 0)
+        {
+            playerModel.GetComponent<MeshRenderer>().enabled = false;
+            visor.GetComponent<MeshRenderer>().enabled = false;
+        }
+        else
+        {
+            playerModel.GetComponent<MeshRenderer>().enabled = true;
+            visor.GetComponent<MeshRenderer>().enabled = true;
+        }
+    }
+    private void SkaterPassive() // there are two options, you do it based on movement, only spawn under you when the last despawns when you aren't moving, or only spawn when you have moved a certain distance // the first option is simplier, so I will do the second
+    {
+        if (this.GetComponent<Rigidbody>().velocity.magnitude == 0)
+        {
+            if (!spawnedIce)
+            {
+                SkaterPassive(0);
+                spawnIceRate = ice.GetComponent<IceScript>().iceDespawnTime;
+            }
+            spawnedIce = true;
+            idolSpawnedIce = true;
+            Invoke("ResetSpawnedIce", spawnIceRate);
+
+        }
+        else if (this.GetComponent<Rigidbody>().velocity.magnitude > 0)
+        {
+            if(idolSpawnedIce == true)
+            {
+                idolSpawnedIce = false;
+                spawnedIce = false;
+            }
+            if (!spawnedIce)
+            {
+                SkaterPassive(0);
+                if (this.GetComponent<Rigidbody>().velocity.magnitude > 10) { spawnIceRate = (ice.GetComponent<IceScript>().iceDespawnTime / this.GetComponent<Rigidbody>().velocity.magnitude); }
+
+                else { spawnIceRate = (ice.GetComponent<IceScript>().iceDespawnTime / 10); }
+            }
+            spawnedIce = true;
+            Invoke("ResetSpawnedIce", spawnIceRate);
+        }
+
+    }
+    public void SkaterPassive(int i)
+    {
+        GameObject playerFeet = GameObject.Find("PlayerFeet");
+        GameObject currentIce = iceSpawningController.GetComponent<IceSpawningController>().SpawnIce(playerFeet.transform);
+        currentIce.GetComponent<IceScript>().DefinePlayer(this.gameObject);
+        iceSpawningController.GetComponent<IceSpawningController>().DefinePlayer(this.gameObject);
+    }
+    public void SkaterPassiveDespawnIce(GameObject currentIce)
+    {
+        iceSpawningController.GetComponent<IceSpawningController>().DespawnIce(currentIce);
+    }
+    private void ResetSpawnedIce()
+    {
+        spawnedIce = false;
+    }
+    private void ArchitectPassive()
+    {
+
     }
     //For the Item Crate
     private void ItemCrate(int itemNumber)

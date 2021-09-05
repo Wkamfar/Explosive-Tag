@@ -5,9 +5,11 @@ using UnityEngine;
 public class GrapplingHookScript : MonoBehaviour
 {
     CharacterController characterController;
+    public GameObject thisGameObject;
     // Start is called before the first frame update
     void Start()
     {
+
     }
 
     // Update is called once per frame
@@ -19,8 +21,7 @@ public class GrapplingHookScript : MonoBehaviour
     {
         if (col.CompareTag("Wall"))
         {
-            Debug.Log("GrapplingHookScript.OnTriggerEnter: the hook collided");
-            characterController.Grapple(this.gameObject);
+            characterController.Grapple(thisGameObject);
             
         }
     }
