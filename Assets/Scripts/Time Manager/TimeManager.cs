@@ -6,6 +6,7 @@ public class TimeManager
 {
     private float currentTime;
     private float endTime;
+    private float startTime; // add to the contructor?
     private const int SECONDS_TO_MS = 1000;
     //Time in milliseconds 1000ms = 1s 
     //Times are offset from the server timestamp
@@ -35,6 +36,7 @@ public class TimeManager
     {
         UpdateCurrentTime();
         UpdateEndTime(currentTime + _endTimeOffset);
+        startTime = currentTime;
     }
     public void UpdateEndTime(float _newEndTime)
     {
@@ -48,8 +50,18 @@ public class TimeManager
     {
         currentTime = PhotonNetwork.ServerTimestamp;
     }
+    public float GetCurrentServerTime()
+    {
+        UpdateCurrentTime();
+        return currentTime;
+    }
+    public void UpdateStartTime(float _startTime)
+    {
+        startTime = _startTime;
+    }
     public float GetTimeLeft()
     {
+        UpdateCurrentTime();
         float remainingTime = endTime - currentTime;
         remainingTime = remainingTime > 0 ? remainingTime : 0;
         return remainingTime;
@@ -69,5 +81,9 @@ public class TimeManager
     public bool IsTimeUp()
     {
         return GetTimeLeft() > 0 ? false : true;
+    }
+    public float GetStartTime()
+    {
+        return startTime;
     }
 }

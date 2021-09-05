@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class IceScript : MonoBehaviour
 {
     public float iceDespawnTime;
@@ -14,10 +14,18 @@ public class IceScript : MonoBehaviour
 
     private void Despawn()
     {
-        player.GetComponent<CharacterController>().SkaterPassiveDespawnIce(this.gameObject);
+        //player.GetComponent<CharacterController>().SkaterPassiveDespawnIce(this.gameObject);
+        player.GetComponent<CharacterController>().view.RPC("NetworkDespawn", RpcTarget.All);
     }
     public void DefinePlayer(GameObject _player)
     {
         player = _player;
+    }
+     
+
+    [PunRPC]
+    public void NetworkDespawn()
+    {
+        player.GetComponent<CharacterController>().SkaterPassiveDespawnIce(this.gameObject);
     }
 }

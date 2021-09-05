@@ -13,6 +13,8 @@ public class CharacterController : MonoBehaviour
     public TimeManager flickerTime;
     private const float FLICKER_RATE = 1000;
     private const int MAX_TIME_OFFSET = 15;
+    //New Colors
+    public ColorManager colorManager;
     //Alt Timers
     public float minTimeToDeath;
     public float tagTimeAdd;
@@ -91,7 +93,10 @@ public class CharacterController : MonoBehaviour
         flickerTime = new TimeManager();
         taggedColorTime = 1 * 1000;
         flashingColorTime = 0.3f * 1000;
-                          
+
+        colorManager = new ColorManager();
+
+        
         iceSpawningController = GameObject.Find("SkaterPassiveSpawnCap");
         gameManager = GameObject.Find("Game Manager");
         playerMod = this.gameObject.transform.Find("PlayerModel");
@@ -120,6 +125,7 @@ public class CharacterController : MonoBehaviour
         deathTime.AddRandomOffsetToEndTime(MAX_TIME_OFFSET);
         startTagTimer = currentTagTime; //Update to everyone 
         this.view.RPC("UpdateTagTimer", RpcTarget.All, deathTime.GetEndTime());
+        colorManager.StartTimer(deathTime.GetStartTime(), deathTime.GetEndTime());
     }
     [PunRPC]
     public void UpdateTagTimer(float endTime)
@@ -158,52 +164,45 @@ public class CharacterController : MonoBehaviour
     }
     void FlashingColors()
     {
-        float timeDifference = PhotonNetwork.ServerTimestamp - flashingStartTime;
-        if (timeDifference < taggedColorTime)
-        {
-            playerModel.gameObject.GetComponent<Renderer>().material.color = taggedColor;
-        }
-        else if (timeDifference < (flashingColorTime + taggedColorTime))
+        colorManager.Update();
+        if (colorManager.IsFlashing())
         {
             playerModel.gameObject.GetComponent<Renderer>().material.color = flashingColor;
         }
-        else 
+        else
         {
-            Debug.Log("CharacterController.FlashingColors: Timer got reset");
-            flashingStartTime = PhotonNetwork.ServerTimestamp;
-            
-        } 
-        float percentageTimeLeft = (currentTagTime - minTimeToDeath) / (startTagTimer - minTimeToDeath);
-        taggedColorTime = taggedColorTime < MIN_FLASHING_TIME ? MIN_FLASHING_TIME : 1 * 1000 * percentageTimeLeft;
-        flashingColorTime = flashingColorTime < MIN_FLASHING_TIME ? MIN_FLASHING_TIME : .3f * 1000 * percentageTimeLeft;
-
+            playerModel.gameObject.GetComponent<Renderer>().material.color = taggedColor;
+        }
     }
     private void resetTagTimer()
     {
         tagTimer = 0;
     }
     [PunRPC]
-    private void GettingTagged(int id)
+    private void GettingTagged(int id, float endTime, float startTagTime)
     {
         if (isTagged)
         {
             tagTimer = 1;
             Invoke("resetTagTimer", tagTimer);
             isTagged = false;
+            colorManager.EndFlashing();
         }
         Debug.Log("CharacterController.GettingTagged: ViewID is " + id);
         Debug.Log("CharacterControler.GettingTagged:" + view.ViewID);
         if(view.ViewID == id)
         {
+            deathTime.UpdateEndTime(endTime);
+            deathTime.UpdateStartTime(startTagTime);
             isTagged = true;
-
+            colorManager.StartTimer(deathTime.GetStartTime(), deathTime.GetEndTime());
             Debug.Log("CharacterController.GettingTaggged: We made it to this if statement." + isTagged);
         }
     }
-    public  void YouAreIt(float timeToDeath)
+    public  void YouAreIt(float timeToDeath, float _startTagTime)
     {//Fix this later
-        this.view.RPC("UpdateTagTimer", RpcTarget.All, timeToDeath + tagTimeAdd);
-        this.view.RPC("GettingTagged", RpcTarget.All, view.ViewID);
+        //this.view.RPC("UpdateTagTimer", RpcTarget.All, timeToDeath + tagTimeAdd);
+        this.view.RPC("GettingTagged", RpcTarget.All, view.ViewID, timeToDeath + tagTimeAdd, _startTagTime);
     }
     public bool TaggedState()
     {
@@ -260,7 +259,7 @@ public class CharacterController : MonoBehaviour
         {
             this.view.RPC("GettingTagged", RpcTarget.All, col.gameObject.GetComponent<PhotonView>().ViewID);
             this.transform.position = new Vector3(Random.Range(-48, 48), 1, Random.Range(-48, 48));
-            col.gameObject.GetComponent<CharacterController>().YouAreIt(minTimeToDeath);
+            col.gameObject.GetComponent<CharacterController>().YouAreIt(deathTime.GetEndTime(), deathTime.GetStartTime());
             //col.gameObject.GetComponent<CharacterController>().isTagged = true;
             //isTagged = false;
         }
