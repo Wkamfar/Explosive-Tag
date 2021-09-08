@@ -66,6 +66,21 @@ public class CharacterController : MonoBehaviour
     public float maxGrappleDistance;
     //Dasher info
     public float maxDashDistance;
+    //Engineer info
+    private GameObject portalSpawner;
+    public Color portal1Color;
+    public Color portal2Color;
+    public GameObject portalCastingOrb;
+    public GameObject portal;
+    public GameObject portalGun;
+    public GameObject[] portals;
+    public GameObject[] portalCastingOrbs;
+    public float portalCastingSpeed;
+    public int  portalMaxUseCount;
+    private int currentPortalCount;
+    private int maxPortalCount = 2;
+    private int currentPortalUseCount;
+    private bool isPortalLinked;
     //skater info
     //for the passive
     private GameObject iceSpawningController;
@@ -96,7 +111,7 @@ public class CharacterController : MonoBehaviour
 
         colorManager = new ColorManager();
 
-        
+        portalSpawner = GameObject.Find("EngineerPortalSpawner");
         iceSpawningController = GameObject.Find("SkaterPassiveSpawnCap");
         gameManager = GameObject.Find("Game Manager");
         playerMod = this.gameObject.transform.Find("PlayerModel");
@@ -357,10 +372,25 @@ public class CharacterController : MonoBehaviour
             {
 
             }
-            //Engineer
-            else if (isEngineer)
+            //maybe make a potal gun later, or make it a disc // make a rick and morty esque skin for the portals // add the cooldown after shooting the portals later // add a cooldown between portal shots // maybe make a portal 1 and portal 2 tag to make things easier
+            //Engineer // make two different colors, indicators or something that shows when the portal is complete versus when there is only one portal, make it so that their is either a cooldown or it is a one time use, and maybe add a way to close and open portals.
+            else if (isEngineer) // make it so that the first portal that gets shot out is one color and the second is another color, and the orb that gets shot out goes to where the mouse is and turns into a potal // make a texture spining animation, and particle effect later
             {
-
+                if ((portalCastingOrbs.Length + portals.Length) < maxPortalCount)
+                {
+                    GameObject currentPortalOrb = Instantiate(portalCastingOrb, portalGun.transform.position, Quaternion.identity);
+                    portalCastingOrbs = GameObject.FindGameObjectsWithTag("PortalCastingOrb");
+                    currentPortalOrb.GetComponent<PortalCastingOrbScript>().DefineOrb(this.gameObject, lookAtSphere.transform, portalCastingSpeed);
+                    if (portals.Length == 1 || portalCastingOrbs.Length == 2) { portalCastingOrbs[1].GetComponent<Renderer>().material.color = portal2Color; }
+                    else { portalCastingOrbs[0].GetComponent<Renderer>().material.color = portal1Color; }
+                }
+                else if (portals.Length == 2)
+                {
+                    foreach(GameObject p in portals)
+                    {
+                        Destroy(this.gameObject);
+                    }
+                }
             }
             //Phantom
             else if (isPhantom) 
@@ -411,6 +441,10 @@ public class CharacterController : MonoBehaviour
     private void EngineerPassive()
     {
 
+    }
+    public void SpawnPortal(Transform portalSpawnLocation)
+    {
+        portalSpawner.GetComponent<PortalSpawningScript>().SpawnPortal(portal, portalSpawnLocation);
     }
     private void PhantomPassive() //use the velocity.magnitude to determine when you aren't moving and then start a timer, and during the timer, make it so that the player gradually gets less visable until nearly being invisible
     { // turn of the mesh renderer and add a constant particle effect, so that the character is still noticable when invisible // add a timer to this later // You can only see the phantom's heart when it is invisible
