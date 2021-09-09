@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{8C25AE18-DB1A-63BF-9AAC-29A32D9F19F7}</ProjectGuid>
+    <ProjectGuid>{B6286E56-8846-8292-7EBA-10C677799402}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>PhotonUnityNetworking.Utilities.PhotonPlayer.Editor</AssemblyName>
@@ -662,19 +662,19 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="PhotonRealtime.csproj">
-      <Project>{C33C14A9-14CE-9032-71A5-DC0AED5CE140}</Project>
+      <Project>{C0D730F3-7A40-948C-91F6-CB55312F6EAC}</Project>
       <Name>PhotonRealtime</Name>
     </ProjectReference>
     <ProjectReference Include="PhotonUnityNetworking.csproj">
-      <Project>{4780DF11-D5A5-9B3E-918D-649462A4B13C}</Project>
+      <Project>{CD54C6C9-A256-EA75-F0BA-F1303079C3FE}</Project>
       <Name>PhotonUnityNetworking</Name>
     </ProjectReference>
     <ProjectReference Include="PhotonUnityNetworking.Utilities.csproj">
-      <Project>{07B4444F-85AD-F890-B59B-C5174D31231C}</Project>
+      <Project>{77730CF7-4D3A-A6E8-10FE-F94AE90D4272}</Project>
       <Name>PhotonUnityNetworking.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="PhotonUnityNetworking.Editor.csproj">
-      <Project>{FC5D9856-866F-D93E-A16B-B3BE4C8B33CF}</Project>
+      <Project>{93C3737C-0627-8D8F-D336-DF685726E3B2}</Project>
       <Name>PhotonUnityNetworking.Editor</Name>
     </ProjectReference>
   </ItemGroup>

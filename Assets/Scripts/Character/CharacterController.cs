@@ -5,7 +5,7 @@ using Photon.Pun;
 using UnityEngine.UI;
 using TMPro;
 public class CharacterController : MonoBehaviour
-{
+{ 
     //Game Manager info
     public GameObject gameManager;
     //New Timers
@@ -66,6 +66,15 @@ public class CharacterController : MonoBehaviour
     public float maxGrappleDistance;
     //Dasher info
     public float maxDashDistance;
+    //Engineer info //send all the information throught the EngineerPortalManagerScript
+    private GameObject engineerPortalManager;
+    public GameObject portal;
+    public GameObject portalOrb;
+    public GameObject portalGun;
+    public float portalOrbSpeed;
+    public int maxPortalUse = 1;
+    public Color portal1Color;
+    public Color portal2Color;
     //skater info
     //for the passive
     private GameObject iceSpawningController;
@@ -96,8 +105,10 @@ public class CharacterController : MonoBehaviour
 
         colorManager = new ColorManager();
 
-        
+        //Find all of the ability managers here
         iceSpawningController = GameObject.Find("SkaterPassiveSpawnCap");
+        engineerPortalManager = GameObject.Find("EngineerPortalManager");
+        engineerPortalManager.GetComponent<EngineerPortalManagerScript>().DefinePlayer();
         gameManager = GameObject.Find("Game Manager");
         playerMod = this.gameObject.transform.Find("PlayerModel");
         //this.view.RPC("GettingTagged", RpcTarget.All, 2001);
@@ -357,10 +368,11 @@ public class CharacterController : MonoBehaviour
             {
 
             }
-            //Engineer
-            else if (isEngineer)
+            //Make the portal de stablize so that the more you use them the closer they get to collasping // make particle effects for the different stages and the portal's collaspe
+            //Engineer //make a portal orb with the engineer manager script, also make it so that if you press the button while the other portals are active they will close 
+            else if (isEngineer) // this will only spawn portal orbs and EngineerPortalManager will controls the other stuff // ahve the portal take the direction you were walking in when you walked in and boost you out in that direction
             {
-
+                engineerPortalManager.GetComponent<EngineerPortalManagerScript>().SpawnPortalOrb();
             }
             //Phantom
             else if (isPhantom) 
@@ -407,6 +419,10 @@ public class CharacterController : MonoBehaviour
     private void ShouterPassive()
     {
 
+    }
+    public GameObject GetPortalManager()
+    {
+        return engineerPortalManager;
     }
     private void EngineerPassive()
     {
@@ -479,7 +495,7 @@ public class CharacterController : MonoBehaviour
 
     }
     //For the Item Crate
-    private void ItemCrate(int itemNumber)
+    private void ItemCrate(int itemNumber) //make the stun gun shoot out a stun bullet that will follow the mouse until it gets to its exact location and explodes to stun
     {
         if (!hasItem)
         {

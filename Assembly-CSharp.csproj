@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{B33C08E3-F4FD-41BC-A1B5-537494E5F875}</ProjectGuid>
+    <ProjectGuid>{2FAF8BEC-E817-ECBF-14B6-359E00D988E0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -66,16 +66,17 @@
     <Compile Include="Assets\Photon\PhotonLibs\WebSocket\SocketWebTcp.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraScript.cs" />
-    <Compile Include="Assets\Scripts\Abilities\GrapplingHookScript.cs" />
+    <Compile Include="Assets\Scripts\Abilities\Grappler\GrapplingHookScript.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatAppIdCheckerUI.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\AppSettingsExtensions.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\NamePickGui.cs" />
-    <Compile Include="Assets\Scripts\Abilities\IceSpawningController.cs" />
+    <Compile Include="Assets\Scripts\Abilities\Skater\IceSpawningController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\Scripts\UI\Game UI\GameManagerScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
+    <Compile Include="Assets\Scripts\Character\ColorManager.cs" />
     <Compile Include="Assets\Scripts\UI\Map and minimap\MapDataScript.cs" />
     <Compile Include="Assets\Scripts\Character\Spawn.cs" />
     <Compile Include="Assets\Scripts\Networking\JoinRoom.cs" />
@@ -98,7 +99,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs" />
-    <Compile Include="Assets\Scripts\Abilities\IceScript.cs" />
+    <Compile Include="Assets\Scripts\Abilities\Skater\IceScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Scripts\UI\Main menu\MenuCore.cs" />
@@ -123,7 +124,9 @@
     <Compile Include="Assets\Scripts\Time Manager\TimeManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
-    <Compile Include="Assets\Scripts\Character\ColorManager.cs" />
+    <Compile Include="Assets\Scripts\Abilities\Engineer\PortalCastingOrbScript.cs" />
+    <Compile Include="Assets\Scripts\Abilities\Engineer\EngineerPortalManagerScript.cs" />
+    <Compile Include="Assets\Scripts\Abilities\Engineer\PortalScript.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -781,43 +784,43 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="PhotonUnityNetworking.csproj">
-      <Project>{4780DF11-D5A5-9B3E-918D-649462A4B13C}</Project>
+      <Project>{CD54C6C9-A256-EA75-F0BA-F1303079C3FE}</Project>
       <Name>PhotonUnityNetworking</Name>
     </ProjectReference>
     <ProjectReference Include="PhotonChat.csproj">
-      <Project>{480E423E-0944-BF1A-03DC-22066B3F33CF}</Project>
+      <Project>{28FE16B6-E9A2-7128-F968-F9329DEBCE78}</Project>
       <Name>PhotonChat</Name>
     </ProjectReference>
     <ProjectReference Include="PhotonUnityNetworking.Demos.csproj">
-      <Project>{3BB05BFC-8B9D-9B51-89DA-7A42078238AD}</Project>
+      <Project>{B07490CD-ED36-6583-C795-A2A617932546}</Project>
       <Name>PhotonUnityNetworking.Demos</Name>
     </ProjectReference>
     <ProjectReference Include="PhotonUnityNetworking.Editor.csproj">
-      <Project>{FC5D9856-866F-D93E-A16B-B3BE4C8B33CF}</Project>
+      <Project>{93C3737C-0627-8D8F-D336-DF685726E3B2}</Project>
       <Name>PhotonUnityNetworking.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.csproj">
-      <Project>{8C25AE18-DB1A-63BF-9AAC-29A32D9F19F7}</Project>
+      <Project>{B6286E56-8846-8292-7EBA-10C677799402}</Project>
       <Name>PhotonUnityNetworking.Utilities.PhotonPlayer.Editor</Name>
     </ProjectReference>
     <ProjectReference Include="PhotonRealtime.csproj">
-      <Project>{C33C14A9-14CE-9032-71A5-DC0AED5CE140}</Project>
+      <Project>{C0D730F3-7A40-948C-91F6-CB55312F6EAC}</Project>
       <Name>PhotonRealtime</Name>
     </ProjectReference>
     <ProjectReference Include="PhotonUnityNetworking.Utilities.csproj">
-      <Project>{07B4444F-85AD-F890-B59B-C5174D31231C}</Project>
+      <Project>{77730CF7-4D3A-A6E8-10FE-F94AE90D4272}</Project>
       <Name>PhotonUnityNetworking.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="PunDemos.DemoHubEditor.csproj">
-      <Project>{4DDDF0B4-04F1-BE67-ED8E-01FA90EBF6CC}</Project>
+      <Project>{AEDCF0EC-ADFC-797D-42FA-1ED3E1BB4266}</Project>
       <Name>PunDemos.DemoHubEditor</Name>
     </ProjectReference>
     <ProjectReference Include="PunDemos.DemoSlotcarEditor.csproj">
-      <Project>{9C365AFD-58F4-69EB-95B1-338DD5CC65A5}</Project>
+      <Project>{42454A5B-5B15-9008-643C-E1EB25EC7384}</Project>
       <Name>PunDemos.DemoSlotcarEditor</Name>
     </ProjectReference>
     <ProjectReference Include="PhotonUnityNetworking.Utilities.Culling.Editor.csproj">
-      <Project>{6EBF45DA-37AB-E862-7B18-48A7BA3921F3}</Project>
+      <Project>{EB150825-A1C3-E8CC-71FB-16226F694F6D}</Project>
       <Name>PhotonUnityNetworking.Utilities.Culling.Editor</Name>
     </ProjectReference>
   </ItemGroup>
