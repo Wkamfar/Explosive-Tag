@@ -75,6 +75,12 @@ public class CharacterController : MonoBehaviour
     public int maxPortalUse = 1;
     public Color portal1Color;
     public Color portal2Color;
+    //Phantom info
+    public GameObject shellBody;
+    public GameObject hostBody;
+    public float ghostFollowTime;
+    public float ghostFormDuration;
+    public float maxDistance;
     //skater info
     //for the passive
     private GameObject iceSpawningController;
@@ -428,9 +434,11 @@ public class CharacterController : MonoBehaviour
     {
 
     }
-    private void PhantomPassive() //use the velocity.magnitude to determine when you aren't moving and then start a timer, and during the timer, make it so that the player gradually gets less visable until nearly being invisible
-    { // turn of the mesh renderer and add a constant particle effect, so that the character is still noticable when invisible // add a timer to this later // You can only see the phantom's heart when it is invisible
-        GameObject visor = GameObject.Find("Visor");
+    //Maybe the ability is when this ghost form comes out instead of it always being out, and then you teleport to where the body is after the ability times out
+    private void PhantomPassive() //The phantom's hitbox follows the mouse, and is chained to a body that moves slowly with wasd, and can also be teleported (if not in a wall to the ghastly hitbox)
+    {
+        //THis is for the invisiblity, comment this out now, and fix it up later
+        /*GameObject visor = GameObject.Find("Visor");
         if(this.GetComponent<Rigidbody>().velocity.magnitude == 0)
         {
             playerModel.GetComponent<MeshRenderer>().enabled = false;
@@ -440,6 +448,19 @@ public class CharacterController : MonoBehaviour
         {
             playerModel.GetComponent<MeshRenderer>().enabled = true;
             visor.GetComponent<MeshRenderer>().enabled = true;
+        }*/
+        float distance = 0;
+        float x = hostBody.transform.position.x - shellBody.transform.position.x;
+        float z = hostBody.transform.position.z - shellBody.transform.position.z;
+        distance = Mathf.Sqrt((x * x + z * z));
+        distance = Mathf.Round(distance * 100) / 100;
+        if (distance < maxDistance)
+        {
+            hostBody.transform.position = Vector3.Lerp(hostBody.transform.position, new Vector3(lookAtSphere.transform.position.x, hostBody.transform.position.y, lookAtSphere.transform.position.z), ghostFollowTime * Time.deltaTime);
+        }
+        else
+        {
+            hostBody.transform.position = shellBody.transform.position;
         }
     }
     private void SkaterPassive() // there are two options, you do it based on movement, only spawn under you when the last despawns when you aren't moving, or only spawn when you have moved a certain distance // the first option is simplier, so I will do the second

@@ -3517,11 +3517,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1047275152}
-  - {fileID: 1011080339}
-  - {fileID: 1087208770}
   - {fileID: 957291096}
+  - {fileID: 1011080339}
   - {fileID: 1021926458}
   - {fileID: 394926918}
+  - {fileID: 1087208770}
   - {fileID: 1909665079}
   - {fileID: 1664323694}
   - {fileID: 2092602462}
@@ -4047,7 +4047,7 @@ RectTransform:
   - {fileID: 118108550}
   - {fileID: 184589405}
   m_Father: {fileID: 370922556}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -10163,7 +10163,7 @@ RectTransform:
   - {fileID: 1227686373}
   - {fileID: 1118155595}
   m_Father: {fileID: 370922556}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -10604,7 +10604,7 @@ RectTransform:
   - {fileID: 1661605684}
   - {fileID: 562055823}
   m_Father: {fileID: 370922556}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -10714,7 +10714,7 @@ RectTransform:
   - {fileID: 1274999074}
   - {fileID: 617194250}
   m_Father: {fileID: 370922556}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -11063,7 +11063,7 @@ RectTransform:
   - {fileID: 913180150}
   - {fileID: 281486775}
   m_Father: {fileID: 370922556}
-  m_RootOrder: 2
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -21961,11 +21961,11 @@ MonoBehaviour:
   - {fileID: 249495307}
   classSelectorDescriptions:
   - {fileID: 1047275151}
-  - {fileID: 1011080338}
-  - {fileID: 1087208769}
   - {fileID: 957291095}
+  - {fileID: 1011080338}
   - {fileID: 1021926457}
   - {fileID: 394926917}
+  - {fileID: 1087208769}
   - {fileID: 1909665078}
   - {fileID: 1664323693}
   - {fileID: 2092602461}
