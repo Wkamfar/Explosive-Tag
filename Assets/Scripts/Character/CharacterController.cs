@@ -449,7 +449,7 @@ public class CharacterController : MonoBehaviour
             playerModel.GetComponent<MeshRenderer>().enabled = true;
             visor.GetComponent<MeshRenderer>().enabled = true;
         }*/
-        float distance = 0;
+        float distance;
         float x = hostBody.transform.position.x - shellBody.transform.position.x;
         float z = hostBody.transform.position.z - shellBody.transform.position.z;
         distance = Mathf.Sqrt((x * x + z * z));
