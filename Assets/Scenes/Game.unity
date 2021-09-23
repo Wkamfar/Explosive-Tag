@@ -423,7 +423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &113655085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -438,8 +438,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   intN: 10
   discs: 5
-  binarySearchArray: 9cffffffa6ffffffb0ffffffbaffffffc4ffffffcefffffffcfffffffdfffffffeffffffffffffffc8000000f406000062070000fd0800007b0d00002e160000d31e0000c522000035280000e02b0000
+  binarySearchArray: 9cffffffa6ffffffb0ffffffbaffffffc4ffffffcefffffffcfffffffdfffffffeffffffffffffffc8000000f406000062070000fd0800007b0d00002e160000d31e0000c5220000e02b000035280000
   numberInArray: 11232
+  randomArray: 
+  randomArraySize: 11
+  min: -1000
+  max: 1000
+  maxN: 100
 --- !u!4 &113655086
 Transform:
   m_ObjectHideFlags: 0

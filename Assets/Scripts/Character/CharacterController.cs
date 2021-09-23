@@ -381,7 +381,7 @@ public class CharacterController : MonoBehaviour
                 engineerPortalManager.GetComponent<EngineerPortalManagerScript>().SpawnPortalOrb();
             }
             //Phantom
-            else if (isPhantom) 
+            else if (isPhantom) // activate the phantom form only when the ability gets activated
             {
 
             }
@@ -449,18 +449,29 @@ public class CharacterController : MonoBehaviour
             playerModel.GetComponent<MeshRenderer>().enabled = true;
             visor.GetComponent<MeshRenderer>().enabled = true;
         }*/
+        //hostBody.SetActive(true);
         float distance;
-        float x = hostBody.transform.position.x - shellBody.transform.position.x;
-        float z = hostBody.transform.position.z - shellBody.transform.position.z;
-        distance = Mathf.Sqrt((x * x + z * z));
+        float a = lookAtSphere.transform.position.x - shellBody.transform.position.x;
+        float b = lookAtSphere.transform.position.z - shellBody.transform.position.z;
+        distance = Mathf.Sqrt((a * a + b * b));
         distance = Mathf.Round(distance * 100) / 100;
         if (distance < maxDistance)
         {
-            hostBody.transform.position = Vector3.Lerp(hostBody.transform.position, new Vector3(lookAtSphere.transform.position.x, hostBody.transform.position.y, lookAtSphere.transform.position.z), ghostFollowTime * Time.deltaTime);
+            //hostBody.transform.position = Vector3.Lerp(hostBody.transform.position, new Vector3(lookAtSphere.transform.position.x, hostBody.transform.position.y, lookAtSphere.transform.position.z), ghostFollowTime * Time.deltaTime);
+            hostBody.transform.position = new Vector3(lookAtSphere.transform.position.x, hostBody.transform.position.y, lookAtSphere.transform.position.z);
         }
-        else
+        else // make a formula to figure out the angle and split it into 4 quadrants so that you can figure out the total angle
         {
-            hostBody.transform.position = shellBody.transform.position;
+            float c = Mathf.Atan(b/a) / Mathf.PI * 180;
+            if (a >= 0 && b >= 0) { } //You are in quadrant 1 and nothing happens
+            else if (a < 0 && b > 0) { c += 180; } //You are in quadrant 2 and you have to move the angle
+            else if (a <= 0 && b <= 0) { c += 180; } //You are in quadrant 3
+            else if (a > 0 && b < 0) { c += 360; } //You are in quadrant 4
+            float targetX = Mathf.Cos(c / 180 * Mathf.PI) * maxDistance;
+            float targetZ = Mathf.Sin(c / 180 * Mathf.PI) * maxDistance;
+            Debug.Log("Character Controller.PhantomPassive: The angle is equal to: " + c);
+            Debug.Log("TargetX is: " + targetX + " TargetZ is: " + targetZ);
+            hostBody.transform.position = new Vector3(shellBody.transform.position.x + targetX, hostBody.transform.position.y, shellBody.transform.position.z + targetZ);
         }
     }
     private void SkaterPassive() // there are two options, you do it based on movement, only spawn under you when the last despawns when you aren't moving, or only spawn when you have moved a certain distance // the first option is simplier, so I will do the second

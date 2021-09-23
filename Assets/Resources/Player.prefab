@@ -687,7 +687,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1302656711384812626}
   m_Layer: 13
-  m_Name: Item Storage
+  m_Name: Ability Storage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1495,7 +1495,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2823439214234840893
 Transform:
   m_ObjectHideFlags: 0
