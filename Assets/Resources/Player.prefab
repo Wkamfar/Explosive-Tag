@@ -590,7 +590,11 @@ MonoBehaviour:
   hostBody: {fileID: 7831197162418808907}
   ghostFollowTime: 4
   ghostFormDuration: 0
-  maxDistance: 5
+  maxDistance: 10
+  chainlink: {fileID: 6060455324064755405, guid: 088fd7017848ba346bf5bdf09bec8c8a, type: 3}
+  chainSpawningRadius: 0
+  maxChains: 30
+  chainSpeed: 100
   ice: {fileID: 3852262794922073610, guid: 21490bde9f9950c49a8eb0220169759f, type: 3}
   spawnIceRate: 1
   rocketDuration: 0

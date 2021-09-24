@@ -9,6 +9,7 @@ TagManager:
   - ItemCrate
   - Ice
   - PortalManager
+  - Chain
   layers:
   - Default
   - TransparentFX

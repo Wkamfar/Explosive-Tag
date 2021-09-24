@@ -81,6 +81,12 @@ public class CharacterController : MonoBehaviour
     public float ghostFollowTime;
     public float ghostFormDuration;
     public float maxDistance;
+    //For the Phantom's chain
+    public GameObject chainlink;
+    private GameObject phantomChainManager;
+    public float chainSpawningRadius;
+    public int maxChains;
+    public float chainSpeed;
     //skater info
     //for the passive
     private GameObject iceSpawningController;
@@ -114,7 +120,9 @@ public class CharacterController : MonoBehaviour
         //Find all of the ability managers here
         iceSpawningController = GameObject.Find("SkaterPassiveSpawnCap");
         engineerPortalManager = GameObject.Find("EngineerPortalManager");
+        phantomChainManager = GameObject.Find("PhantomChainManager");
         engineerPortalManager.GetComponent<EngineerPortalManagerScript>().DefinePlayer();
+        phantomChainManager.GetComponent<PhantomChainControllerScript>().DefinePlayer();
         gameManager = GameObject.Find("Game Manager");
         playerMod = this.gameObject.transform.Find("PlayerModel");
         //this.view.RPC("GettingTagged", RpcTarget.All, 2001);
@@ -375,7 +383,7 @@ public class CharacterController : MonoBehaviour
 
             }
             //Make the portal de stablize so that the more you use them the closer they get to collasping // make particle effects for the different stages and the portal's collaspe
-            //Engineer //make a portal orb with the engineer manager script, also make it so that if you press the button while the other portals are active they will close 
+            //Engineer //make a portal orb with the engineer manager script, also make it so that if you press the button while the other portals are active they will close // Make the portal entering based on trig angles versus momentum
             else if (isEngineer) // this will only spawn portal orbs and EngineerPortalManager will controls the other stuff // ahve the portal take the direction you were walking in when you walked in and boost you out in that direction
             {
                 engineerPortalManager.GetComponent<EngineerPortalManagerScript>().SpawnPortalOrb();
@@ -430,12 +438,12 @@ public class CharacterController : MonoBehaviour
     {
         return engineerPortalManager;
     }
-    private void EngineerPassive()
+    private void EngineerPassive() 
     {
 
     }
     //Maybe the ability is when this ghost form comes out instead of it always being out, and then you teleport to where the body is after the ability times out
-    private void PhantomPassive() //The phantom's hitbox follows the mouse, and is chained to a body that moves slowly with wasd, and can also be teleported (if not in a wall to the ghastly hitbox)
+    private void PhantomPassive() //make it so that if you can leave the circle, and if you do, you will get tugged back to your body or something like that.
     {
         //THis is for the invisiblity, comment this out now, and fix it up later
         /*GameObject visor = GameObject.Find("Visor");
@@ -455,26 +463,60 @@ public class CharacterController : MonoBehaviour
         float b = lookAtSphere.transform.position.z - shellBody.transform.position.z;
         distance = Mathf.Sqrt((a * a + b * b));
         distance = Mathf.Round(distance * 100) / 100;
+        float c = Mathf.Atan(b / a) / Mathf.PI * 180;
+        if (a >= 0 && b >= 0) { } //You are in quadrant 1 and nothing happens
+        else if (a < 0 && b > 0) { c += 180; } //You are in quadrant 2 and you have to move the angle
+        else if (a <= 0 && b <= 0) { c += 180; } //You are in quadrant 3
+        else if (a > 0 && b < 0) { c += 360; } //You are in quadrant 4
+        float targetX = Mathf.Cos(c / 180 * Mathf.PI) * maxDistance;
+        float targetZ = Mathf.Sin(c / 180 * Mathf.PI) * maxDistance;
+        //Debug.Log("Character Controller.PhantomPassive: The angle is equal to: " + c);
+        //Debug.Log("TargetX is: " + targetX + " TargetZ is: " + targetZ);
         if (distance < maxDistance)
         {
             //hostBody.transform.position = Vector3.Lerp(hostBody.transform.position, new Vector3(lookAtSphere.transform.position.x, hostBody.transform.position.y, lookAtSphere.transform.position.z), ghostFollowTime * Time.deltaTime);
             hostBody.transform.position = new Vector3(lookAtSphere.transform.position.x, hostBody.transform.position.y, lookAtSphere.transform.position.z);
         }
-        else // make a formula to figure out the angle and split it into 4 quadrants so that you can figure out the total angle
+        else 
         {
-            float c = Mathf.Atan(b/a) / Mathf.PI * 180;
-            if (a >= 0 && b >= 0) { } //You are in quadrant 1 and nothing happens
-            else if (a < 0 && b > 0) { c += 180; } //You are in quadrant 2 and you have to move the angle
-            else if (a <= 0 && b <= 0) { c += 180; } //You are in quadrant 3
-            else if (a > 0 && b < 0) { c += 360; } //You are in quadrant 4
-            float targetX = Mathf.Cos(c / 180 * Mathf.PI) * maxDistance;
-            float targetZ = Mathf.Sin(c / 180 * Mathf.PI) * maxDistance;
-            Debug.Log("Character Controller.PhantomPassive: The angle is equal to: " + c);
-            Debug.Log("TargetX is: " + targetX + " TargetZ is: " + targetZ);
             hostBody.transform.position = new Vector3(shellBody.transform.position.x + targetX, hostBody.transform.position.y, shellBody.transform.position.z + targetZ);
         }
+        //make a new spawning radius for the chains
+        float d;
+        if (c < 180) { d = c + 180; }
+        else { d = c - 180; }
+        float x = Mathf.Cos(c / 180 * Mathf.PI) * chainSpawningRadius + shellBody.transform.position.x;
+        float y = Mathf.Sin(c / 180 * Mathf.PI) * chainSpawningRadius + shellBody.transform.position.z;
+        float x1 = Mathf.Cos(d / 180 * Mathf.PI) * chainSpawningRadius + hostBody.transform.position.x;
+        float y1 = Mathf.Sin(d / 180 * Mathf.PI) * chainSpawningRadius + hostBody.transform.position.z;
+        float a1 = x - x1;
+        float b1 = y - y1;
+        float surfaceDistance = Mathf.Sqrt((a1 * a1 + b1 * b1));
+        float spawningDistance = maxDistance / (maxChains * 2);
+        GameObject[] chains = phantomChainManager.GetComponent<PhantomChainControllerScript>().GetChainArray();
+        if (chains.Length < 1 && surfaceDistance > spawningDistance)
+        {//create a chain
+            phantomChainManager.GetComponent<PhantomChainControllerScript>().SpawnChain(chainlink, new Vector3(x, shellBody.transform.position.y, y));
+        }
+        else if (chains.Length >= 1)
+        {
+            float x2 = chains[chains.Length - 1].transform.position.x;
+            float y2 = chains[chains.Length - 1].transform.position.z;
+            float a2 = x2 - x;
+            float b2 = y2 - y;
+            float nearestChainDistance = Mathf.Sqrt((a2 * a2 + b2 * b2));
+            if (nearestChainDistance > spawningDistance)
+            {
+                phantomChainManager.GetComponent<PhantomChainControllerScript>().SpawnChain(chainlink, new Vector3(x, shellBody.transform.position.y, y));
+            } 
+        }
+        Debug.Log("CharacterController.PhantomPassive: The distance between the outside of the host and the shell is: " + surfaceDistance);
     }
-    private void SkaterPassive() // there are two options, you do it based on movement, only spawn under you when the last despawns when you aren't moving, or only spawn when you have moved a certain distance // the first option is simplier, so I will do the second
+    public GameObject GetPhantomChainManager()
+    {
+        return phantomChainManager;
+    }
+    private void SkaterPassive() //rework the code for the skater and use trig
     {
         if (this.GetComponent<Rigidbody>().velocity.magnitude == 0)
         {
