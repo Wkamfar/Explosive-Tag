@@ -442,9 +442,16 @@ MonoBehaviour:
   numberInArray: 11232
   randomArray: 
   randomArraySize: 11
-  min: -1000
-  max: 1000
+  min: 1
+  max: 10
   maxN: 100
+  wordArray: 6100620063006500690076006c006f006d007500
+  numOfSeats: 100
+  personSeats: 
+  takenSeats: 
+  stairProblemNumber: 5
+  dollars: 0.15
+  milkArray: 0500000004000000010000000300000005000000070000000100000002000000
 --- !u!4 &113655086
 Transform:
   m_ObjectHideFlags: 0
@@ -6588,6 +6595,71 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 562055822}
   m_CullTransparentMesh: 1
+--- !u!1 &565901781
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 565901783}
+  - component: {fileID: 565901782}
+  - component: {fileID: 565901784}
+  m_Layer: 0
+  m_Name: Pathfinding AI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &565901782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565901781}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0bd54f8eb36e2840afe6d2ce1812037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveArray: []
+  possibleMoves: []
+  playerLocation: {x: -1, y: -1}
+  pathfinderLocation: {x: -1, y: -1}
+  targetLocation: {x: -1, y: -1}
+--- !u!4 &565901783
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565901781}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &565901784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565901781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae91fa1e39f8e314a90f368fc3360667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alternatePaths: []
+  pathfinderLocation: {x: 0, y: 0}
+  playerLocation: {x: 0, y: 0}
+  targetLocation: {x: 0, y: 0}
 --- !u!1 &569892856
 GameObject:
   m_ObjectHideFlags: 0
@@ -7399,6 +7471,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 629010054}
   m_CullTransparentMesh: 1
+--- !u!1 &630175371
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 630175373}
+  - component: {fileID: 630175372}
+  m_Layer: 0
+  m_Name: TargetFinding AI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &630175372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630175371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6236f5d241e3224baad2d9a75914bee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &630175373
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 630175371}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.864006, y: 5.0315666, z: -5.2324276}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &647253212
 GameObject:
   m_ObjectHideFlags: 0
@@ -10044,6 +10159,51 @@ MonoBehaviour:
   xLimit: 30
   yLimit: 20
   zLimit: 38.75
+--- !u!1 &925614123
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 925614125}
+  - component: {fileID: 925614124}
+  m_Layer: 0
+  m_Name: Find Words
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &925614124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925614123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f86561a9471f40408bef49e6532f1e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  specialLetter: 97
+  validLetters: 6300640069006d006f0074006100
+--- !u!4 &925614125
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 925614123}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.864006, y: 5.0315666, z: -5.2324276}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &927600892
 GameObject:
   m_ObjectHideFlags: 0
@@ -20415,6 +20575,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fe3bb92b38a8a14c99173d4328d306d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstChainPos: {x: 0, y: 0, z: 0}
+  lastChainPos: {x: 0, y: 0, z: 0}
+  chains: []
 --- !u!1 &1848040173
 GameObject:
   m_ObjectHideFlags: 0

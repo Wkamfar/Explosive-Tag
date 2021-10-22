@@ -9,6 +9,9 @@ public class PhantomChainControllerScript : MonoBehaviour
     private GameObject player;
     private int maxChainCount;
     private int currentChainCount;
+    private int lowestMaxChainNumber;
+    public Vector3 firstChainPos;
+    public Vector3 lastChainPos;
     public GameObject[] chains;
 
     // Start is called before the first frame update
@@ -23,19 +26,52 @@ public class PhantomChainControllerScript : MonoBehaviour
         if (foundPlayer)
         {
             chains = GameObject.FindGameObjectsWithTag("Chain");
+            lowestMaxChainNumber = maxChainCount - currentChainCount;
+            Debug.Log("PhantomChain LowestMaxChainCount is: " + lowestMaxChainNumber);
             if (chains.Length > maxChainCount)
             {
                 DestroyLastChain();
             }
         }
     }
+    public void FirstAndLastChainPosition(Vector3 _firstChainPos, Vector3 _lastChainPos)
+    {
+        firstChainPos = _firstChainPos;
+        lastChainPos = _lastChainPos;
+    }
+    public void DeactivatePhantom()
+    {
+        for (int i = 0; i < chains.Length - 1; i++)
+        {
+            chains[i].GetComponent<PhantomChainScript>().DeactivateChains();
+        }
+    }
+    public void ActivatePhantom()
+    {
+        currentChainCount = 0;
+    }
+    public void LowerMaxChainAll()
+    {
+        for (int i = 0; i < chains.Length - 1; i++)
+        {
+            chains[i].GetComponent<PhantomChainScript>().LowerMaxChainLocal(lowestMaxChainNumber);
+        }
+    }
+    public void PullChainStraight()
+    {
+
+    }
     public void SpawnChain(GameObject _chain, Vector3 spawnLocation)
     {
-        GameObject currentChain = Instantiate(_chain,  spawnLocation, Quaternion.identity);
-        currentChain.GetComponent<PhantomChainScript>().DefinePlayer();
-        currentChain.GetComponent<PhantomChainScript>().SetChainNumber(currentChainCount);
-        currentChainCount++;
-        Debug.Log("PhantomChainControllerScript.SpawnChain: The chain spawned");
+        if (chains.Length < maxChainCount)
+        {
+            GameObject currentChain = Instantiate(_chain, spawnLocation, Quaternion.identity);
+            currentChain.GetComponent<PhantomChainScript>().DefinePlayer();
+            currentChain.GetComponent<PhantomChainScript>().SetChainNumber(currentChainCount);
+            currentChainCount++;
+            Debug.Log("PhantomChainControllerScript.SpawnChain: The chain spawned");
+        }
+
     }
     public void DestroyLastChain()
     {
@@ -45,14 +81,21 @@ public class PhantomChainControllerScript : MonoBehaviour
     public void DestroySpecificChain(GameObject _chain)
     {
         Destroy(_chain);
-        for (int i = 0; i < chains.Length - 1; i++)
-        {
-            chains[i].GetComponent<PhantomChainScript>().DecreaseChainNumber();
-        }
+        //for (int i = 0; i < chains.Length - 1; i++)
+        //{
+        //    chains[i].GetComponent<PhantomChainScript>().DecreaseChainNumber();
+        //}
     }
     public GameObject[] GetChainArray()
     {
         return chains;
+    }
+    public void EmptyChainArray()
+    {
+        for (int i = 0; i < chains.Length; i++)
+        {
+            Destroy(chains[i]);
+        }
     }
     public void DefinePlayer()
     {

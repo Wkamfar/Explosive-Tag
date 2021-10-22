@@ -578,7 +578,7 @@ MonoBehaviour:
   grapplingSpeed: 30
   grapplingHookShootForce: 50
   maxGrappleDistance: 100
-  maxDashDistance: 20
+  maxDashDistance: 0
   portal: {fileID: 6519404077620383673, guid: 17e2aa081d6c7a041b70ed23afbaf601, type: 3}
   portalOrb: {fileID: 7010026179343292137, guid: 99e1347a9fb8d934d9f54fcb7cf3459c, type: 3}
   portalGun: {fileID: 6281929655249516105}
@@ -592,9 +592,11 @@ MonoBehaviour:
   ghostFormDuration: 0
   maxDistance: 10
   chainlink: {fileID: 6060455324064755405, guid: 088fd7017848ba346bf5bdf09bec8c8a, type: 3}
-  chainSpawningRadius: 0
-  maxChains: 30
+  chainSpawningRadius: 0.5
+  maxChains: 11
   chainSpeed: 100
+  phantomRecallSpeed: 20
+  isRecallingPhantom: 0
   ice: {fileID: 3852262794922073610, guid: 21490bde9f9950c49a8eb0220169759f, type: 3}
   spawnIceRate: 1
   rocketDuration: 0

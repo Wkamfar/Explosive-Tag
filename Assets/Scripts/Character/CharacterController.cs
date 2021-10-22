@@ -81,12 +81,16 @@ public class CharacterController : MonoBehaviour
     public float ghostFollowTime;
     public float ghostFormDuration;
     public float maxDistance;
+    private bool phantomFormActive;
+    
     //For the Phantom's chain
     public GameObject chainlink;
     private GameObject phantomChainManager;
     public float chainSpawningRadius;
     public int maxChains;
     public float chainSpeed;
+    public float phantomRecallSpeed;
+    public bool isRecallingPhantom;
     //skater info
     //for the passive
     private GameObject iceSpawningController;
@@ -125,6 +129,8 @@ public class CharacterController : MonoBehaviour
         phantomChainManager.GetComponent<PhantomChainControllerScript>().DefinePlayer();
         gameManager = GameObject.Find("Game Manager");
         playerMod = this.gameObject.transform.Find("PlayerModel");
+        //Phantom Ghost is declared here
+        hostBody.SetActive(false);
         //this.view.RPC("GettingTagged", RpcTarget.All, 2001);
         taggerSpeed = speed * 1.1f;
         view = GetComponent<PhotonView>();
@@ -391,7 +397,19 @@ public class CharacterController : MonoBehaviour
             //Phantom
             else if (isPhantom) // activate the phantom form only when the ability gets activated
             {
-
+                if (!phantomFormActive && !isRecallingPhantom)
+                {
+                    phantomFormActive = true;
+                    hostBody.SetActive(true);
+                    phantomChainManager.GetComponent<PhantomChainControllerScript>().ActivatePhantom();
+                }
+                else if (phantomFormActive)
+                { //pull the ghost in until he collides and then make him disappear
+                    phantomFormActive = false;
+                    phantomChainManager.GetComponent<PhantomChainControllerScript>().DeactivatePhantom(); //Delete the chains when the get within the radius //Pull the body in as well
+                    isRecallingPhantom = true;
+                    //hostBody.SetActive(false);
+                }
             }
             //Skater // use the fuel gauge to display how long the rocket is going to last for. 
             else if (isSkater) //you can't cancel it by pressing the ability button again, but it will deactivate after hitting a wall, but you will be stunned for a split second
@@ -443,9 +461,11 @@ public class CharacterController : MonoBehaviour
 
     }
     //Maybe the ability is when this ghost form comes out instead of it always being out, and then you teleport to where the body is after the ability times out
-    private void PhantomPassive() //make it so that if you can leave the circle, and if you do, you will get tugged back to your body or something like that.
+    private void PhantomPassive() //Make it so that there is an ability that if your ghost is inside your body or something like that
     {
-        //THis is for the invisiblity, comment this out now, and fix it up later
+        if (phantomFormActive)
+        {
+            //This is for the invisiblity, comment this out now, and fix it up later
         /*GameObject visor = GameObject.Find("Visor");
         if(this.GetComponent<Rigidbody>().velocity.magnitude == 0)
         {
@@ -485,10 +505,15 @@ public class CharacterController : MonoBehaviour
         float d;
         if (c < 180) { d = c + 180; }
         else { d = c - 180; }
-        float x = Mathf.Cos(c / 180 * Mathf.PI) * chainSpawningRadius + shellBody.transform.position.x;
-        float y = Mathf.Sin(c / 180 * Mathf.PI) * chainSpawningRadius + shellBody.transform.position.z;
-        float x1 = Mathf.Cos(d / 180 * Mathf.PI) * chainSpawningRadius + hostBody.transform.position.x;
-        float y1 = Mathf.Sin(d / 180 * Mathf.PI) * chainSpawningRadius + hostBody.transform.position.z;
+        float x3 = Mathf.Cos(c / 180 * Mathf.PI) * chainSpawningRadius + shellBody.transform.position.x;
+        float y3 = Mathf.Sin(c / 180 * Mathf.PI) * chainSpawningRadius + shellBody.transform.position.z;
+        float x4 = Mathf.Cos(d / 180 * Mathf.PI) * chainSpawningRadius + hostBody.transform.position.x;
+        float y4 = Mathf.Sin(d / 180 * Mathf.PI) * chainSpawningRadius + hostBody.transform.position.z;
+        phantomChainManager.GetComponent<PhantomChainControllerScript>().FirstAndLastChainPosition(new Vector3(x4, this.transform.position.y, y4), new Vector3(x3, this.transform.position.y, y3));
+        float x = shellBody.transform.position.x;
+        float y = shellBody.transform.position.z;
+        float x1 = hostBody.transform.position.x;
+        float y1 = hostBody.transform.position.z;
         float a1 = x - x1;
         float b1 = y - y1;
         float surfaceDistance = Mathf.Sqrt((a1 * a1 + b1 * b1));
@@ -510,7 +535,8 @@ public class CharacterController : MonoBehaviour
                 phantomChainManager.GetComponent<PhantomChainControllerScript>().SpawnChain(chainlink, new Vector3(x, shellBody.transform.position.y, y));
             } 
         }
-        Debug.Log("CharacterController.PhantomPassive: The distance between the outside of the host and the shell is: " + surfaceDistance);
+        }
+        
     }
     public GameObject GetPhantomChainManager()
     {
